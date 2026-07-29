@@ -25,6 +25,7 @@ export function SlidesPage() {
       slides={deck}
       currentIndex={currentIndex}
       onNavigate={(index) => navigate(`/lectures/${lectureId}/slides/${index}`)}
+      lectureId={lectureId}
     />
   )
 }

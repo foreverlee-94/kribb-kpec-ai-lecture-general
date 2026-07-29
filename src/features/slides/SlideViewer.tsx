@@ -16,7 +16,9 @@ function BulletList({ bullets, className = 'mt-6' }: { bullets: string[]; classN
       {bullets.map((bullet, i) => (
         <li key={i} className="flex items-start gap-3">
           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" />
-          <span className="text-sm leading-relaxed text-white/80 lg:text-base">{bullet}</span>
+          <span className="text-[clamp(0.875rem,0.8333rem+0.2083cqw,1rem)] leading-relaxed text-white/80">
+            {bullet}
+          </span>
         </li>
       ))}
     </ul>
@@ -46,8 +48,8 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
-      <div className="relative isolate flex aspect-video max-h-[85vh] w-full flex-col overflow-y-auto rounded-[22px] border border-white/10 bg-deep-green p-8 sm:p-10 lg:p-12">
+    <div className="@container mx-auto flex w-full max-w-[1280px] flex-col gap-4">
+      <div className="relative isolate flex aspect-video max-h-[85vh] w-full flex-col overflow-y-auto rounded-[22px] border border-white/10 bg-deep-green p-[clamp(1.25rem,0.667rem+2.917cqw,3rem)]">
         <div className="relative z-10 flex items-center justify-between">
           <span className="font-mono text-[11px] tracking-[0.28px] text-white/50 uppercase">
             {lectureId ?? 'lecture'} · Slide
@@ -60,28 +62,28 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
         <div className="relative z-10 flex flex-1 flex-col justify-start overflow-hidden">
           {slide.diagram === 'timeline' ? (
             <>
-              <h1 className="font-display text-3xl leading-tight font-medium tracking-tight text-white lg:text-4xl">
+              <h1 className="font-display text-[clamp(1.375rem,1.083rem+1.458cqw,2.25rem)] leading-tight font-medium tracking-tight text-white">
                 {slide.title}
               </h1>
               {slide.body && (
-                <p className="mt-5 max-w-3xl text-base leading-relaxed text-white/80 lg:text-lg">
+                <p className="mt-3 max-w-3xl text-[clamp(0.9375rem,0.875rem+0.3125cqw,1.125rem)] leading-relaxed text-white/80">
                   {slide.body}
                 </p>
               )}
-              <div className="mt-4 h-36 shrink-0 lg:h-44">
+              <div className="mt-3 h-[clamp(3.5rem,3.5rem+2cqw,7rem)] shrink-0">
                 <SlideDiagram id={slide.diagram} />
               </div>
-              {slide.bullets && <BulletList bullets={slide.bullets} className="mt-4" />}
+              {slide.bullets && <BulletList bullets={slide.bullets} className="mt-3" />}
             </>
           ) : (
-            <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.3fr_1fr]">
+            <div className="grid grid-cols-1 gap-6 @3xl:h-full @3xl:grid-cols-[1.3fr_1fr]">
               <div>
-                <h1 className="font-display text-3xl leading-tight font-medium tracking-tight text-white lg:text-4xl">
+                <h1 className="font-display text-[clamp(1.375rem,1.083rem+1.458cqw,2.25rem)] leading-tight font-medium tracking-tight text-white">
                   {slide.title}
                 </h1>
 
                 {slide.body && (
-                  <p className="mt-5 max-w-3xl text-base leading-relaxed text-white/80 lg:text-lg">
+                  <p className="mt-5 max-w-3xl text-[clamp(0.9375rem,0.875rem+0.3125cqw,1.125rem)] leading-relaxed text-white/80">
                     {slide.body}
                   </p>
                 )}
@@ -90,7 +92,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
               </div>
 
               {slide.diagram && (
-                <div className="h-72 shrink-0 rounded-lg border border-white/10 bg-white/5 p-3 md:h-80 lg:h-96">
+                <div className="h-[clamp(6rem,5.5rem+2cqw,8rem)] rounded-lg border border-white/10 bg-white/5 p-3 @3xl:h-full">
                   <SlideDiagram id={slide.diagram} />
                 </div>
               )}

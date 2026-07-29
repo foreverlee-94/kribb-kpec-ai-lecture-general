@@ -16,6 +16,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1950s-60s',
     title: '1950s~1960s — AI라는 개념의 탄생',
+    body: '오른쪽 도식처럼, 입력값을 가중합해 하나의 출력으로 내보내는 단순한 구조가 이 시대 신경망 연구의 출발점이었습니다.',
     diagram: 'perceptron',
     bullets: [
       '1956년 다트머스 회의에서 "Artificial Intelligence"라는 용어가 처음 제안됨',
@@ -27,6 +28,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1970s',
     title: '1970s — 첫 번째 AI 겨울',
+    body: '오른쪽 그래프처럼, 초기의 뜨거운 기대는 이론적 한계가 드러나며 빠르게 식어갔습니다.',
     diagram: 'winter',
     bullets: [
       '1969년 Minsky와 Papert가 퍼셉트론의 한계(XOR 문제 등)를 수학적으로 증명',
@@ -37,6 +39,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1980s',
     title: '1980s — 전문가 시스템의 부흥',
+    body: '오른쪽 도식처럼 "IF-THEN" 규칙을 사슬처럼 연결해 전문가의 판단을 흉내 내는 방식이 이 시대의 핵심 접근이었습니다.',
     diagram: 'expert-system',
     bullets: [
       '특정 분야 전문가의 지식을 규칙(rule)으로 표현한 전문가 시스템(Expert System) 붐',
@@ -48,6 +51,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1990s',
     title: '1990s — 두 번째 겨울과 통계적 전환',
+    body: '오른쪽 도식의 서포트 벡터 머신처럼, 두 집단을 가장 넓은 여백으로 나누는 경계를 데이터로부터 찾아내는 방식이 주목받았습니다.',
     diagram: 'svm-margin',
     bullets: [
       '전문가 시스템의 유지보수 비용·확장성 한계로 다시 투자 위축',
@@ -59,6 +63,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2000s',
     title: '2000s — 데이터와 계산 자원의 축적',
+    body: '오른쪽 그래프처럼, 화려한 돌파구는 없었지만 데이터와 연산력이 꾸준히 쌓이며 다음 도약을 준비하던 시기입니다.',
     diagram: 'compute-data',
     bullets: [
       '인터넷 확산으로 대규모 데이터가 축적되기 시작',
@@ -69,6 +74,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2010s-deep-learning',
     title: '2012~2016 — 딥러닝 혁명',
+    body: '오른쪽 도식처럼 여러 층을 깊게 쌓은 신경망이, 이전 세대와는 다른 차원의 성능을 보여주기 시작했습니다.',
     diagram: 'deep-net',
     bullets: [
       '2012년 AlexNet이 ImageNet 이미지 인식 대회에서 압도적 성능으로 우승',
@@ -79,6 +85,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2017-transformer',
     title: '2017~2019 — 트랜스포머와 사전학습 패러다임',
+    body: '오른쪽 도식처럼 문장 속 단어들이 서로 직접 주의를 주고받는 "어텐션" 구조가, 순차 처리의 한계를 넘어서게 했습니다.',
     diagram: 'attention',
     bullets: [
       '2017년 논문 "Attention Is All You Need"에서 트랜스포머(Transformer) 구조 제안',
@@ -89,6 +96,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2020s-llm',
     title: '2020~2023 — 거대 언어모델과 생성형 AI',
+    body: '오른쪽 그래프처럼, 모델 규모를 키울수록 성능이 예측 가능하게 좋아진다는 사실이 이 시기 개발 전략을 지배했습니다.',
     diagram: 'scaling-curve',
     bullets: [
       '2020년 GPT-3 — 파라미터 규모 확장이 곧 성능 향상으로 이어지는 "스케일링 법칙" 부각',
@@ -99,6 +107,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: 'now-and-next',
     title: '2024~현재, 그리고 다음',
+    body: '오른쪽 도식처럼 계획하고 행동한 뒤 관찰하며 스스로 판단을 반복하는 "에이전트" 구조가 다음 흐름을 이끌고 있습니다.',
     diagram: 'agent-loop',
     bullets: [
       '대형 멀티모달 모델이 텍스트·이미지·음성·영상을 아우르며 일상 도구로 확산',

@@ -9,7 +9,7 @@ export function MainLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen flex-col overflow-hidden bg-white">
       <TopNav
         onMenuButtonClick={() => setMobileOpen((open) => !open)}
         onCollapseButtonClick={() => setCollapsed((c) => !c)}

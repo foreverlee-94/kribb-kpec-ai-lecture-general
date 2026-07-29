@@ -1,10 +1,10 @@
 import type { DiagramId } from '@/types/slide'
 
-const BRIGHT = '#FFC24D'
-const MID = '#E8A33D'
-const DIM = '#D9A85C'
-const MUTED = '#7A5518'
-const GRID = '#2A2013'
+const BRIGHT = '#ff7759'
+const MID = '#cfe8e2'
+const DIM = '#9fc6bd'
+const MUTED = '#7fae9f'
+const GRID = 'rgba(255,255,255,0.12)'
 
 const labelProps = {
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',

@@ -4,7 +4,7 @@ import { lectureNavItems } from '@/data/lectures'
 export function HomePage() {
   return (
     <div className="mx-auto max-w-4xl">
-      <h1 className="text-2xl font-semibold text-slate-900">Welcome</h1>
+      <h1 className="font-display text-2xl font-medium text-slate-900">Welcome</h1>
       <p className="mt-1 text-slate-600">Pick a lecture from the sidebar, or from the list below.</p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -12,7 +12,7 @@ export function HomePage() {
           <Link
             key={item.id}
             to={item.path}
-            className="rounded-lg border border-slate-200 bg-white p-4 transition-colors hover:border-brand hover:shadow-sm"
+            className="rounded-lg bg-stone p-4 transition-colors hover:bg-stone/70"
           >
             <h2 className="font-medium text-slate-900">{item.title}</h2>
             {item.description && (

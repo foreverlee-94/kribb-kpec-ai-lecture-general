@@ -33,7 +33,7 @@ export function TopNav({
         </svg>
       </button>
 
-      <span className="text-brand text-base font-semibold">{title}</span>
+      <span className="text-brand font-display text-base font-medium">{title}</span>
     </header>
   )
 }

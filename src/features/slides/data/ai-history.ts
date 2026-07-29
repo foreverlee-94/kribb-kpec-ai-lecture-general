@@ -5,10 +5,12 @@ export const aiHistorySlides: Slide[] = [
     id: 'cover',
     title: 'AI 기술 발전의 역사: 1960년대부터 현재까지',
     body: '기호주의 AI의 태동부터 오늘날의 거대 언어모델과 에이전트까지, 지난 60여 년의 굵직한 흐름을 훑어봅니다.',
+    diagram: 'timeline',
   },
   {
     id: '1950s-60s',
     title: '1950s~1960s — AI라는 개념의 탄생',
+    diagram: 'perceptron',
     bullets: [
       '1956년 다트머스 회의에서 "Artificial Intelligence"라는 용어가 처음 제안됨',
       '1958년 퍼셉트론(Perceptron) 등장 — 최초의 학습 가능한 신경망 모델',
@@ -19,6 +21,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1970s',
     title: '1970s — 첫 번째 AI 겨울',
+    diagram: 'winter',
     bullets: [
       '1969년 Minsky와 Papert가 퍼셉트론의 한계(XOR 문제 등)를 수학적으로 증명',
       '초기 낙관론 대비 실질적 성과 부족 → 각국 정부·연구기관의 투자 축소',
@@ -28,6 +31,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1980s',
     title: '1980s — 전문가 시스템의 부흥',
+    diagram: 'expert-system',
     bullets: [
       '특정 분야 전문가의 지식을 규칙(rule)으로 표현한 전문가 시스템(Expert System) 붐',
       '기업 현장에 도입된 대표 사례: DEC의 XCON',
@@ -38,6 +42,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '1990s',
     title: '1990s — 두 번째 겨울과 통계적 전환',
+    diagram: 'svm-margin',
     bullets: [
       '전문가 시스템의 유지보수 비용·확장성 한계로 다시 투자 위축',
       '규칙 기반 접근 대신 데이터로부터 학습하는 통계적 머신러닝이 부상',
@@ -48,6 +53,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2000s',
     title: '2000s — 데이터와 계산 자원의 축적',
+    diagram: 'compute-data',
     bullets: [
       '인터넷 확산으로 대규모 데이터가 축적되기 시작',
       'GPU 등 병렬 연산 하드웨어가 범용 연산에 활용되기 시작',
@@ -57,6 +63,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2010s-deep-learning',
     title: '2012~2016 — 딥러닝 혁명',
+    diagram: 'deep-net',
     bullets: [
       '2012년 AlexNet이 ImageNet 이미지 인식 대회에서 압도적 성능으로 우승',
       '심층 신경망 + GPU 병렬 연산의 조합이 실질적 성능 향상으로 이어짐',
@@ -66,6 +73,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2017-transformer',
     title: '2017~2019 — 트랜스포머와 사전학습 패러다임',
+    diagram: 'attention',
     bullets: [
       '2017년 논문 "Attention Is All You Need"에서 트랜스포머(Transformer) 구조 제안',
       '순차 처리(RNN) 없이 병렬 학습이 가능해지며 대규모 모델 학습의 문이 열림',
@@ -75,6 +83,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: '2020s-llm',
     title: '2020~2023 — 거대 언어모델과 생성형 AI',
+    diagram: 'scaling-curve',
     bullets: [
       '2020년 GPT-3 — 파라미터 규모 확장이 곧 성능 향상으로 이어지는 "스케일링 법칙" 부각',
       '2022년 ChatGPT 공개 — 대중이 처음으로 대화형 AI를 직접 체감',
@@ -84,6 +93,7 @@ export const aiHistorySlides: Slide[] = [
   {
     id: 'now-and-next',
     title: '2024~현재, 그리고 다음',
+    diagram: 'agent-loop',
     bullets: [
       '대형 멀티모달 모델이 텍스트·이미지·음성·영상을 아우르며 일상 도구로 확산',
       '단순 응답을 넘어 스스로 계획하고 도구를 사용하는 "에이전트(Agent)" 형태로 진화',

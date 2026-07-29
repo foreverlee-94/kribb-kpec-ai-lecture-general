@@ -31,29 +31,29 @@ export function SlideViewer({ slides, currentIndex, onNavigate }: SlideViewerPro
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6">
-      <div className="relative flex aspect-video w-full flex-col overflow-y-auto rounded-2xl border border-slate-200 bg-white p-10 shadow-lg sm:p-14 lg:p-16">
+    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4">
+      <div className="relative flex aspect-video max-h-[85vh] w-full flex-col overflow-y-auto rounded-2xl border border-slate-200 bg-white p-8 shadow-lg sm:p-10 lg:p-12">
         <span className="text-sm font-semibold tracking-wide text-brand uppercase">
           {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
         </span>
 
         <div className="flex flex-1 flex-col justify-center">
-          <h1 className="text-4xl leading-tight font-bold tracking-tight text-slate-900 lg:text-5xl">
+          <h1 className="text-3xl leading-tight font-bold tracking-tight text-slate-900 lg:text-4xl">
             {slide.title}
           </h1>
 
           {slide.body && (
-            <p className="mt-6 max-w-3xl text-xl leading-relaxed text-slate-600 lg:text-2xl">
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600 lg:text-xl">
               {slide.body}
             </p>
           )}
 
           {slide.bullets && (
-            <ul className="mt-8 max-w-3xl space-y-5">
+            <ul className="mt-6 max-w-3xl space-y-4">
               {slide.bullets.map((bullet, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-brand" />
-                  <span className="text-lg leading-relaxed text-slate-700 lg:text-xl">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-brand" />
+                  <span className="text-base leading-relaxed text-slate-700 lg:text-lg">
                     {bullet}
                   </span>
                 </li>

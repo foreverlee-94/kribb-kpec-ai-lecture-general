@@ -44,7 +44,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
           {lectureId ?? 'lecture'}/{slide.id}.md
         </span>
 
-        <div className="relative z-10 flex flex-1 flex-col justify-center overflow-hidden">
+        <div className="relative z-10 flex flex-1 flex-col justify-start overflow-hidden">
           {slide.diagram === 'timeline' ? (
             <>
               <h1 className="text-2xl leading-tight font-bold text-[#FFC24D] lg:text-3xl">
@@ -56,12 +56,12 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
                   {slide.body}
                 </p>
               )}
-              <div className="mt-6 h-36 shrink-0 lg:h-44">
+              <div className="mt-6 h-48 shrink-0 lg:h-60">
                 <SlideDiagram id={slide.diagram} />
               </div>
             </>
           ) : (
-            <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-[1.3fr_1fr]">
+            <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.3fr_1fr]">
               <div>
                 <h1 className="text-2xl leading-tight font-bold text-[#FFC24D] lg:text-3xl">
                   <span className="text-[#7A5518]">$ </span>
@@ -89,7 +89,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
               </div>
 
               {slide.diagram && (
-                <div className="h-56 shrink-0 rounded-lg border border-[#2A2013] bg-black/20 p-3 md:h-64 lg:h-72">
+                <div className="h-72 shrink-0 rounded-lg border border-[#2A2013] bg-black/20 p-3 md:h-80 lg:h-96">
                   <SlideDiagram id={slide.diagram} />
                 </div>
               )}

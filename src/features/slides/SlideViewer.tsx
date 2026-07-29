@@ -10,6 +10,19 @@ interface SlideViewerProps {
   lectureId?: string
 }
 
+function BulletList({ bullets, className = 'mt-6' }: { bullets: string[]; className?: string }) {
+  return (
+    <ul className={clsx('max-w-3xl space-y-3', className)}>
+      {bullets.map((bullet, i) => (
+        <li key={i} className="flex items-start gap-3">
+          <span className="text-[#E8A33D]">&gt;</span>
+          <span className="text-sm leading-relaxed text-[#D9A85C] lg:text-base">{bullet}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: SlideViewerProps) {
   const total = slides.length
   const slide = slides[currentIndex]
@@ -56,9 +69,10 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
                   {slide.body}
                 </p>
               )}
-              <div className="mt-6 h-48 shrink-0 lg:h-60">
+              <div className="mt-4 h-36 shrink-0 lg:h-44">
                 <SlideDiagram id={slide.diagram} />
               </div>
+              {slide.bullets && <BulletList bullets={slide.bullets} className="mt-4" />}
             </>
           ) : (
             <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.3fr_1fr]">
@@ -74,18 +88,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
                   </p>
                 )}
 
-                {slide.bullets && (
-                  <ul className="mt-6 max-w-3xl space-y-3">
-                    {slide.bullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="text-[#E8A33D]">&gt;</span>
-                        <span className="text-sm leading-relaxed text-[#D9A85C] lg:text-base">
-                          {bullet}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {slide.bullets && <BulletList bullets={slide.bullets} />}
               </div>
 
               {slide.diagram && (

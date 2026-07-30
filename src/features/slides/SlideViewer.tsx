@@ -100,44 +100,27 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-start overflow-hidden">
-          {slide.diagram === 'timeline' ? (
-            <>
+          <div className="grid grid-cols-1 gap-6 @3xl:h-full @3xl:grid-cols-[1.3fr_1fr]">
+            <div>
               <h1 className="font-display text-[clamp(1.375rem,1.083rem+1.458cqw,2.25rem)] leading-tight font-medium tracking-tight text-white">
                 {slide.title}
               </h1>
+
               {slide.body && (
-                <p className="mt-3 max-w-3xl text-[clamp(0.9375rem,0.875rem+0.3125cqw,1.125rem)] leading-relaxed text-white/80">
+                <p className="mt-5 max-w-3xl text-[clamp(0.9375rem,0.875rem+0.3125cqw,1.125rem)] leading-relaxed text-white/80">
                   {slide.body}
                 </p>
               )}
-              <div className="mt-3 h-[clamp(3.5rem,3.5rem+2cqw,7rem)] shrink-0">
+
+              {slide.bullets && <BulletList bullets={slide.bullets} />}
+            </div>
+
+            {slide.diagram && (
+              <div className="h-[clamp(6rem,5.5rem+2cqw,8rem)] rounded-lg border border-white/10 bg-white/5 p-3 @3xl:h-full">
                 <SlideDiagram id={slide.diagram} />
               </div>
-              {slide.bullets && <BulletList bullets={slide.bullets} className="mt-3" />}
-            </>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 @3xl:h-full @3xl:grid-cols-[1.3fr_1fr]">
-              <div>
-                <h1 className="font-display text-[clamp(1.375rem,1.083rem+1.458cqw,2.25rem)] leading-tight font-medium tracking-tight text-white">
-                  {slide.title}
-                </h1>
-
-                {slide.body && (
-                  <p className="mt-5 max-w-3xl text-[clamp(0.9375rem,0.875rem+0.3125cqw,1.125rem)] leading-relaxed text-white/80">
-                    {slide.body}
-                  </p>
-                )}
-
-                {slide.bullets && <BulletList bullets={slide.bullets} />}
-              </div>
-
-              {slide.diagram && (
-                <div className="h-[clamp(6rem,5.5rem+2cqw,8rem)] rounded-lg border border-white/10 bg-white/5 p-3 @3xl:h-full">
-                  <SlideDiagram id={slide.diagram} />
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 

@@ -94,17 +94,20 @@ function Winter() {
       />
       <circle cx={40} cy={80} r={4} fill={ACCENT} />
       <circle cx={150} cy={235} r={4} fill={ACCENT} />
-      <text x={44} y={62} fill={TEXT} {...labelProps}>
+      <text x={34} y={20} fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        관심 · 투자 수준
+      </text>
+      <text x={44} y={50} fill={TEXT} {...labelProps}>
         1969 · 낙관론 정점
       </text>
-      <text x={120} y={220} fill={TEXT} {...labelProps}>
+      <text x={178} y={198} fill={TEXT} {...labelProps}>
         자금 축소
       </text>
-      <text x={270} y={264} textAnchor="end" fill={TEXT_MUTED} {...labelProps}>
+      <text x={280} y={288} textAnchor="middle" fill={TEXT_MUTED} {...labelProps}>
         1974
       </text>
-      <text x={34} y={48} fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        연구 투자 (개념도)
+      <text x={198} y={288} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        시간
       </text>
     </svg>
   )
@@ -281,21 +284,21 @@ function Attention() {
 }
 
 function ScalingCurve() {
-  const points: [number, number, string][] = [
-    [40, 240, 'GPT-1'],
-    [130, 200, 'GPT-2'],
-    [205, 130, 'GPT-3'],
-    [270, 55, 'GPT-4~'],
+  const points: [number, number, string, number, number, 'start' | 'middle' | 'end'][] = [
+    [40, 240, 'GPT-1', 38, 206, 'start'],
+    [130, 200, 'GPT-2', 100, 182, 'end'],
+    [205, 130, 'GPT-3', 175, 108, 'end'],
+    [270, 55, 'GPT-4~', 290, 44, 'start'],
   ]
   return (
     <svg viewBox="0 0 320 280" className="h-full w-full">
       <line x1={30} y1={20} x2={30} y2={260} stroke={GRID} strokeWidth={1} />
       <line x1={30} y1={260} x2={300} y2={260} stroke={GRID} strokeWidth={1} />
       <path d="M40,240 C110,235 150,210 205,130 S255,75 270,55" fill="none" stroke={LINE} strokeWidth={2} />
-      {points.map(([x, y, label]) => (
+      {points.map(([x, y, label, lx, ly, anchor]) => (
         <g key={label}>
           <circle cx={x} cy={y} r={4} fill={ACCENT} />
-          <text x={x} y={y - 14} textAnchor="middle" fill={TEXT} {...labelProps}>
+          <text x={lx} y={ly} textAnchor={anchor} fill={TEXT} {...labelProps}>
             {label}
           </text>
         </g>
@@ -311,39 +314,50 @@ function ScalingCurve() {
 }
 
 function AgentLoop() {
+  const center = { x: 160, y: 150 }
+  const radius = 28
   const stages = [
     { x: 160, y: 40, label: '계획' },
     { x: 280, y: 150, label: '행동' },
     { x: 160, y: 260, label: '관찰' },
     { x: 40, y: 150, label: '판단' },
   ]
+
+  function pointToward(from: { x: number; y: number }, toward: { x: number; y: number }, distance: number) {
+    const dx = toward.x - from.x
+    const dy = toward.y - from.y
+    const len = Math.sqrt(dx * dx + dy * dy)
+    return { x: from.x + (dx / len) * distance, y: from.y + (dy / len) * distance }
+  }
+
   return (
     <svg viewBox="0 0 320 300" className="h-full w-full">
       <defs>
-        <marker id="agent-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        <marker id="agent-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE} />
         </marker>
       </defs>
       {stages.map((s, i) => {
         const next = stages[(i + 1) % stages.length]
         const midX = (s.x + next.x) / 2
         const midY = (s.y + next.y) / 2
-        const cx = 160 + (midX - 160) * 1.35
-        const cy = 150 + (midY - 150) * 1.35
+        const control = { x: center.x + (midX - center.x) * 1.35, y: center.y + (midY - center.y) * 1.35 }
+        const start = pointToward(s, control, radius + 6)
+        const end = pointToward(next, control, radius + 14)
         return (
           <path
             key={`arc-${i}`}
-            d={`M${s.x},${s.y} Q${cx},${cy} ${next.x},${next.y}`}
+            d={`M${start.x},${start.y} Q${control.x},${control.y} ${end.x},${end.y}`}
             fill="none"
-            stroke={LINE_DIM}
-            strokeWidth={1.5}
+            stroke={LINE}
+            strokeWidth={2}
             markerEnd="url(#agent-arrow)"
           />
         )
       })}
       {stages.map((s) => (
         <g key={s.label}>
-          <circle cx={s.x} cy={s.y} r={28} fill="none" stroke={ACCENT} strokeWidth={2} />
+          <circle cx={s.x} cy={s.y} r={radius} fill="#003c33" stroke={ACCENT} strokeWidth={2} />
           <text x={s.x} y={s.y + 6} textAnchor="middle" fill={TEXT} {...labelProps}>
             {s.label}
           </text>

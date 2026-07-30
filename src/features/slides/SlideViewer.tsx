@@ -202,7 +202,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId, editA
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-start overflow-hidden">
-          <div className="grid grid-cols-1 gap-6 @3xl:grid-cols-[1.3fr_1fr] @3xl:items-center">
+          <div className="grid grid-cols-1 gap-6 @3xl:grid-cols-[1.3fr_1fr] @3xl:items-start">
             <div>
               {isEditing ? (
                 <input

@@ -1,45 +1,46 @@
 import type { DiagramId } from '@/types/slide'
 
-const BRIGHT = '#ff7759'
-const MID = '#cfe8e2'
-const DIM = '#9fc6bd'
-const MUTED = '#7fae9f'
-const GRID = 'rgba(255,255,255,0.12)'
+const ACCENT = '#ff7759'
+const LINE = '#cfe8e2'
+const LINE_DIM = '#5f8a80'
+const GRID = 'rgba(255,255,255,0.14)'
+const TEXT = '#f2fbf9'
+const TEXT_MUTED = 'rgba(242,251,249,0.62)'
 
 const labelProps = {
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-  fontSize: 11,
+  fontSize: 16,
 }
 
 function Timeline() {
   const points: [number, string, number, number][] = [
-    [20, '1950s', 20, 110],
-    [106, '1960s', 106, 70],
-    [191, '1970s', 191, 150],
-    [277, '1980s', 277, 90],
-    [363, '1990s', 363, 150],
-    [449, '2000s', 449, 110],
-    [534, '2010s', 534, 50],
-    [620, '2020s', 620, 15],
+    [10, '1950s', 10, 55],
+    [53, '1960s', 53, 35],
+    [95, '1970s', 95, 75],
+    [138, '1980s', 138, 45],
+    [181, '1990s', 181, 75],
+    [224, '2000s', 224, 55],
+    [267, '2010s', 267, 25],
+    [310, '2020s', 310, 8],
   ]
   const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[2]},${p[3]}`).join(' ')
 
   return (
-    <svg viewBox="0 0 640 200" className="h-full w-full">
-      <line x1={20} y1={150} x2={620} y2={150} stroke={GRID} strokeWidth={1} />
+    <svg viewBox="0 0 320 100" className="h-full w-full">
+      <line x1={10} y1={75} x2={310} y2={75} stroke={GRID} strokeWidth={1} />
       {points.map(([x, label]) => (
         <g key={label}>
-          <line x1={x} y1={145} x2={x} y2={155} stroke={MUTED} strokeWidth={1} />
-          <text x={x} y={172} textAnchor="middle" fill={DIM} {...labelProps}>
+          <line x1={x} y1={73} x2={x} y2={77} stroke={LINE_DIM} strokeWidth={1} />
+          <text x={x} y={92} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
             {label}
           </text>
         </g>
       ))}
-      <path d={path} fill="none" stroke={MID} strokeWidth={2} />
+      <path d={path} fill="none" stroke={LINE} strokeWidth={1.5} />
       {points.map(([, label, x, y]) => (
-        <circle key={`${label}-dot`} cx={x} cy={y} r={4} fill={BRIGHT} />
+        <circle key={`${label}-dot`} cx={x} cy={y} r={2.5} fill={ACCENT} />
       ))}
-      <text x={20} y={30} fill={MUTED} {...labelProps}>
+      <text x={10} y={18} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
         관심 · 투자 · 성능 (개념도)
       </text>
     </svg>
@@ -56,23 +57,23 @@ function Perceptron() {
     <svg viewBox="0 0 320 280" className="h-full w-full">
       {inputs.map((inp) => (
         <g key={inp.label}>
-          <line x1={55} y1={inp.y} x2={155} y2={140} stroke={MUTED} strokeWidth={1.5} />
-          <circle cx={40} cy={inp.y} r={16} fill="none" stroke={MID} strokeWidth={2} />
-          <text x={40} y={inp.y + 4} textAnchor="middle" fill={BRIGHT} {...labelProps}>
+          <line x1={55} y1={inp.y} x2={155} y2={140} stroke={LINE_DIM} strokeWidth={1.5} />
+          <circle cx={40} cy={inp.y} r={16} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={40} y={inp.y + 5} textAnchor="middle" fill={TEXT} {...labelProps}>
             {inp.label}
           </text>
         </g>
       ))}
-      <circle cx={170} cy={140} r={22} fill="none" stroke={BRIGHT} strokeWidth={2} />
-      <text x={170} y={146} textAnchor="middle" fill={BRIGHT} fontSize={16} fontFamily={labelProps.fontFamily}>
+      <circle cx={170} cy={140} r={22} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <text x={170} y={147} textAnchor="middle" fill={TEXT} fontSize={18} fontFamily={labelProps.fontFamily}>
         &#x3a3;
       </text>
-      <line x1={192} y1={140} x2={260} y2={140} stroke={MUTED} strokeWidth={1.5} />
-      <circle cx={278} cy={140} r={16} fill="none" stroke={MID} strokeWidth={2} />
-      <text x={278} y={144} textAnchor="middle" fill={BRIGHT} {...labelProps}>
+      <line x1={192} y1={140} x2={260} y2={140} stroke={LINE_DIM} strokeWidth={1.5} />
+      <circle cx={278} cy={140} r={16} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={278} y={145} textAnchor="middle" fill={TEXT} {...labelProps}>
         y
       </text>
-      <text x={170} y={250} textAnchor="middle" fill={DIM} {...labelProps}>
+      <text x={170} y={255} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
         input -&gt; weighted sum -&gt; output
       </text>
     </svg>
@@ -84,25 +85,25 @@ function Winter() {
     <svg viewBox="0 0 320 300" className="h-full w-full">
       <line x1={30} y1={30} x2={30} y2={270} stroke={GRID} strokeWidth={1} />
       <line x1={30} y1={270} x2={290} y2={270} stroke={GRID} strokeWidth={1} />
-      <line x1={30} y1={80} x2={290} y2={80} stroke={MUTED} strokeWidth={1} strokeDasharray="4 4" />
+      <line x1={30} y1={80} x2={290} y2={80} stroke={LINE_DIM} strokeWidth={1} strokeDasharray="4 4" />
       <path
         d="M40,80 L110,90 L150,235 L220,248 L280,244"
         fill="none"
-        stroke={MID}
+        stroke={LINE}
         strokeWidth={2}
       />
-      <circle cx={40} cy={80} r={4} fill={BRIGHT} />
-      <circle cx={150} cy={235} r={4} fill={BRIGHT} />
-      <text x={44} y={65} fill={DIM} {...labelProps}>
+      <circle cx={40} cy={80} r={4} fill={ACCENT} />
+      <circle cx={150} cy={235} r={4} fill={ACCENT} />
+      <text x={44} y={62} fill={TEXT} {...labelProps}>
         1969 · 낙관론 정점
       </text>
-      <text x={120} y={225} fill={BRIGHT} {...labelProps}>
+      <text x={120} y={220} fill={TEXT} {...labelProps}>
         자금 축소
       </text>
-      <text x={270} y={264} textAnchor="end" fill={MUTED} {...labelProps}>
+      <text x={270} y={264} textAnchor="end" fill={TEXT_MUTED} {...labelProps}>
         1974
       </text>
-      <text x={34} y={45} fill={MUTED} {...labelProps}>
+      <text x={34} y={48} fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
         연구 투자 (개념도)
       </text>
     </svg>
@@ -126,14 +127,14 @@ function ExpertSystem() {
             height={60}
             rx={4}
             fill="none"
-            stroke={row.bright ? BRIGHT : MID}
+            stroke={row.bright ? ACCENT : LINE}
             strokeWidth={row.bright ? 2.5 : 2}
           />
-          <text x={160} y={row.y + 36} textAnchor="middle" fill={row.bright ? BRIGHT : DIM} {...labelProps}>
+          <text x={160} y={row.y + 36} textAnchor="middle" fill={TEXT} {...labelProps}>
             {row.text}
           </text>
           {i < rows.length - 1 && (
-            <line x1={160} y1={row.y + 60} x2={160} y2={row.y + 90} stroke={MUTED} strokeWidth={1.5} />
+            <line x1={160} y1={row.y + 60} x2={160} y2={row.y + 90} stroke={LINE_DIM} strokeWidth={1.5} />
           )}
         </g>
       ))}
@@ -157,21 +158,21 @@ function SvmMargin() {
   return (
     <svg viewBox="0 0 320 300" className="h-full w-full">
       <line x1={20} y1={260} x2={300} y2={20} stroke={GRID} strokeWidth={1.5} strokeDasharray="5 5" />
-      <line x1={45} y1={260} x2={325} y2={20} stroke={BRIGHT} strokeWidth={2} />
+      <line x1={45} y1={260} x2={325} y2={20} stroke={ACCENT} strokeWidth={2} />
       <line x1={-5} y1={260} x2={275} y2={20} stroke={GRID} strokeWidth={1.5} strokeDasharray="5 5" />
       {classA.map(([x, y], i) => (
-        <circle key={`a${i}`} cx={x} cy={y} r={7} fill="none" stroke={MID} strokeWidth={2} />
+        <circle key={`a${i}`} cx={x} cy={y} r={7} fill="none" stroke={LINE} strokeWidth={2} />
       ))}
       {classB.map(([x, y], i) => (
-        <circle key={`b${i}`} cx={x} cy={y} r={7} fill={MID} />
+        <circle key={`b${i}`} cx={x} cy={y} r={7} fill={LINE} />
       ))}
-      <text x={50} y={40} fill={DIM} {...labelProps}>
+      <text x={30} y={40} fill={TEXT} {...labelProps}>
         class A
       </text>
-      <text x={230} y={270} fill={DIM} {...labelProps}>
+      <text x={210} y={280} fill={TEXT} {...labelProps}>
         class B
       </text>
-      <text x={160} y={155} textAnchor="middle" fill={BRIGHT} {...labelProps}>
+      <text x={200} y={90} textAnchor="middle" fill={TEXT} {...labelProps}>
         margin
       </text>
     </svg>
@@ -193,17 +194,17 @@ function ComputeData() {
           width={30}
           height={h}
           fill="none"
-          stroke={i === bars.length - 1 ? BRIGHT : MID}
+          stroke={i === bars.length - 1 ? ACCENT : LINE}
           strokeWidth={2}
         />
       ))}
-      <text x={30} y={240} fill={MUTED} {...labelProps}>
+      <text x={30} y={242} fill={TEXT_MUTED} {...labelProps}>
         2000
       </text>
-      <text x={270} y={240} textAnchor="end" fill={MUTED} {...labelProps}>
+      <text x={270} y={242} textAnchor="end" fill={TEXT_MUTED} {...labelProps}>
         2009
       </text>
-      <text x={30} y={30} fill={DIM} {...labelProps}>
+      <text x={30} y={30} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
         데이터 · 연산량 (개념도)
       </text>
     </svg>
@@ -242,15 +243,15 @@ function DeepNet() {
             cy={y}
             r={9}
             fill="none"
-            stroke={li === layers.length - 1 ? BRIGHT : MID}
+            stroke={li === layers.length - 1 ? ACCENT : LINE}
             strokeWidth={2}
           />
         )),
       )}
-      <text x={60} y={280} textAnchor="middle" fill={DIM} {...labelProps}>
+      <text x={60} y={285} textAnchor="middle" fill={TEXT} {...labelProps}>
         input
       </text>
-      <text x={270} y={280} textAnchor="middle" fill={BRIGHT} {...labelProps}>
+      <text x={270} y={285} textAnchor="middle" fill={TEXT} {...labelProps}>
         output
       </text>
     </svg>
@@ -264,15 +265,15 @@ function Attention() {
     <svg viewBox="0 0 320 220" className="h-full w-full">
       {xs.map((x, i) => (
         <g key={tokens[i]}>
-          <rect x={x - 25} y={150} width={50} height={36} rx={4} fill="none" stroke={MID} strokeWidth={1.5} />
-          <text x={x} y={172} textAnchor="middle" fill={DIM} {...labelProps}>
+          <rect x={x - 25} y={150} width={50} height={36} rx={4} fill="none" stroke={LINE} strokeWidth={1.5} />
+          <text x={x} y={173} textAnchor="middle" fill={TEXT} {...labelProps}>
             {tokens[i]}
           </text>
         </g>
       ))}
-      <path d={`M${xs[3]},150 Q${(xs[3] + xs[1]) / 2},60 ${xs[1]},150`} fill="none" stroke={BRIGHT} strokeWidth={2} />
-      <path d={`M${xs[3]},150 Q${(xs[3] + xs[0]) / 2},90 ${xs[0]},150`} fill="none" stroke={MID} strokeWidth={1.5} />
-      <text x={160} y={40} textAnchor="middle" fill={MUTED} {...labelProps}>
+      <path d={`M${xs[3]},150 Q${(xs[3] + xs[1]) / 2},60 ${xs[1]},150`} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <path d={`M${xs[3]},150 Q${(xs[3] + xs[0]) / 2},90 ${xs[0]},150`} fill="none" stroke={LINE} strokeWidth={1.5} />
+      <text x={160} y={35} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
         self-attention
       </text>
     </svg>
@@ -283,26 +284,26 @@ function ScalingCurve() {
   const points: [number, number, string][] = [
     [40, 240, 'GPT-1'],
     [130, 200, 'GPT-2'],
-    [210, 130, 'GPT-3'],
-    [280, 40, 'GPT-4~'],
+    [205, 130, 'GPT-3'],
+    [270, 55, 'GPT-4~'],
   ]
   return (
     <svg viewBox="0 0 320 280" className="h-full w-full">
       <line x1={30} y1={20} x2={30} y2={260} stroke={GRID} strokeWidth={1} />
       <line x1={30} y1={260} x2={300} y2={260} stroke={GRID} strokeWidth={1} />
-      <path d="M40,240 C110,235 150,210 210,130 S270,60 290,35" fill="none" stroke={MID} strokeWidth={2} />
+      <path d="M40,240 C110,235 150,210 205,130 S255,75 270,55" fill="none" stroke={LINE} strokeWidth={2} />
       {points.map(([x, y, label]) => (
         <g key={label}>
-          <circle cx={x} cy={y} r={4} fill={BRIGHT} />
-          <text x={x} y={y - 10} textAnchor="middle" fill={DIM} {...labelProps}>
+          <circle cx={x} cy={y} r={4} fill={ACCENT} />
+          <text x={x} y={y - 14} textAnchor="middle" fill={TEXT} {...labelProps}>
             {label}
           </text>
         </g>
       ))}
-      <text x={30} y={15} fill={MUTED} {...labelProps}>
+      <text x={38} y={14} fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
         모델 규모
       </text>
-      <text x={300} y={275} textAnchor="end" fill={MUTED} {...labelProps}>
+      <text x={300} y={276} textAnchor="end" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
         시간
       </text>
     </svg>
@@ -320,7 +321,7 @@ function AgentLoop() {
     <svg viewBox="0 0 320 300" className="h-full w-full">
       <defs>
         <marker id="agent-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill={MID} />
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
         </marker>
       </defs>
       {stages.map((s, i) => {
@@ -334,7 +335,7 @@ function AgentLoop() {
             key={`arc-${i}`}
             d={`M${s.x},${s.y} Q${cx},${cy} ${next.x},${next.y}`}
             fill="none"
-            stroke={MUTED}
+            stroke={LINE_DIM}
             strokeWidth={1.5}
             markerEnd="url(#agent-arrow)"
           />
@@ -342,8 +343,8 @@ function AgentLoop() {
       })}
       {stages.map((s) => (
         <g key={s.label}>
-          <circle cx={s.x} cy={s.y} r={26} fill="none" stroke={BRIGHT} strokeWidth={2} />
-          <text x={s.x} y={s.y + 5} textAnchor="middle" fill={BRIGHT} {...labelProps}>
+          <circle cx={s.x} cy={s.y} r={28} fill="none" stroke={ACCENT} strokeWidth={2} />
+          <text x={s.x} y={s.y + 6} textAnchor="middle" fill={TEXT} {...labelProps}>
             {s.label}
           </text>
         </g>

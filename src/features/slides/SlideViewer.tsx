@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import type { Slide } from '@/types/slide'
 import { SlideDiagram } from '@/features/slides/SlideDiagram'
+import { diagramAspect } from '@/features/slides/diagramAspect'
 
 interface SlideViewerProps {
   slides: Slide[]
@@ -100,7 +101,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-start overflow-hidden">
-          <div className="grid grid-cols-1 gap-6 @3xl:h-full @3xl:grid-cols-[1.3fr_1fr]">
+          <div className="grid grid-cols-1 gap-6 @3xl:grid-cols-[1.3fr_1fr] @3xl:items-center">
             <div>
               <h1 className="font-display text-[clamp(1.375rem,1.083rem+1.458cqw,2.25rem)] leading-tight font-medium tracking-tight text-white">
                 {slide.title}
@@ -116,7 +117,10 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
             </div>
 
             {slide.diagram && (
-              <div className="h-[clamp(6rem,5.5rem+2cqw,8rem)] rounded-lg border border-white/10 bg-white/5 p-3 @3xl:h-full">
+              <div
+                style={{ aspectRatio: diagramAspect[slide.diagram] }}
+                className="w-full min-h-32 rounded-lg border border-white/10 bg-white/5 p-3"
+              >
                 <SlideDiagram id={slide.diagram} />
               </div>
             )}

@@ -16,4 +16,8 @@ export const diagramAspect: Record<DiagramId, number> = {
   'algorithm-flow': 320 / 300,
   'pixel-grid': 320 / 300,
   'image-filter': 320 / 220,
+  'data-structures': 320 / 260,
+  convolution: 320 / 300,
+  'gradient-descent': 320 / 260,
+  'overfit-curve': 320 / 260,
 }

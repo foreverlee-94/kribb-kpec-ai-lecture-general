@@ -615,6 +615,293 @@ function ImageFilter() {
   )
 }
 
+function DataStructures() {
+  const arrayItems = ['A', 'B', 'C', 'D']
+  const arrayCell = 45
+  const arrayStartX = 20
+  const arrayY = 60
+
+  const kv = [
+    { k: 'name', v: '"Amy"' },
+    { k: 'age', v: '17' },
+    { k: 'city', v: '"Seoul"' },
+  ]
+  const kvY = 60
+  const kvRowH = 40
+  const kvX = 185
+
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <text x={20} y={30} fill={TEXT} fontSize={15} fontFamily={labelProps.fontFamily}>
+        배열(Array)
+      </text>
+      {arrayItems.map((v, i) => (
+        <g key={v}>
+          <rect
+            x={arrayStartX + i * arrayCell}
+            y={arrayY}
+            width={arrayCell - 4}
+            height={44}
+            fill="none"
+            stroke={i === 0 ? ACCENT : LINE}
+            strokeWidth={i === 0 ? 2.5 : 2}
+          />
+          <text
+            x={arrayStartX + i * arrayCell + (arrayCell - 4) / 2}
+            y={arrayY + 27}
+            textAnchor="middle"
+            fill={TEXT}
+            {...labelProps}
+          >
+            {v}
+          </text>
+          <text
+            x={arrayStartX + i * arrayCell + (arrayCell - 4) / 2}
+            y={arrayY + 62}
+            textAnchor="middle"
+            fill={TEXT_MUTED}
+            fontSize={12}
+            fontFamily={labelProps.fontFamily}
+          >
+            {i}
+          </text>
+        </g>
+      ))}
+      <text x={20} y={155} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        순서(인덱스)로 값을 찾음
+      </text>
+
+      <text x={kvX} y={30} fill={TEXT} fontSize={15} fontFamily={labelProps.fontFamily}>
+        키-값 구조
+      </text>
+      {kv.map((row, i) => (
+        <g key={row.k}>
+          <rect x={kvX} y={kvY + i * kvRowH} width={115} height={kvRowH - 8} rx={4} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={kvX + 8} y={kvY + i * kvRowH + 21} fill={ACCENT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            {row.k}
+          </text>
+          <text x={kvX + 70} y={kvY + i * kvRowH + 21} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            {row.v}
+          </text>
+        </g>
+      ))}
+      <text x={kvX} y={kvY + kv.length * kvRowH + 20} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        이름(키)으로 값을 찾음
+      </text>
+
+      <text x={160} y={230} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        같은 데이터도 담는 방식(자료구조)에 따라 찾는 방법이 달라집니다
+      </text>
+    </svg>
+  )
+}
+
+function Convolution() {
+  const cell = 28
+  const gridX = 20
+  const gridY = 44
+  const cols = 5
+  const rows = 5
+  const tones = [LINE, 'rgba(255,255,255,0.22)', LINE_DIM]
+  const kernelStartRow = 1
+  const kernelStartCol = 1
+  const kernelSize = 3
+
+  const kernelValues = [1, 2, 1, 2, 4, 2, 1, 2, 1]
+  const kernelX = 205
+  const kernelY = 64
+  const kernelCell = 26
+
+  const highlightCx = gridX + (kernelStartCol + kernelSize / 2) * cell
+  const highlightCy = gridY + (kernelStartRow + kernelSize / 2) * cell
+  const kernelCx = kernelX + (kernelSize * kernelCell) / 2
+  const kernelCy = kernelY + (kernelSize * kernelCell) / 2
+
+  return (
+    <svg viewBox="0 0 320 300" className="h-full w-full">
+      <defs>
+        <marker id="conv-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={gridX} y={gridY - 16} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        입력 이미지
+      </text>
+      {Array.from({ length: rows }).map((_, r) =>
+        Array.from({ length: cols }).map((_, c) => (
+          <rect
+            key={`in-${r}-${c}`}
+            x={gridX + c * cell}
+            y={gridY + r * cell}
+            width={cell - 2}
+            height={cell - 2}
+            fill={tones[(r + c) % tones.length]}
+          />
+        )),
+      )}
+      <rect
+        x={gridX + kernelStartCol * cell - 2}
+        y={gridY + kernelStartRow * cell - 2}
+        width={kernelSize * cell}
+        height={kernelSize * cell}
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={2.5}
+      />
+
+      <line
+        x1={highlightCx}
+        y1={highlightCy}
+        x2={kernelCx}
+        y2={kernelCy}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        markerEnd="url(#conv-arrow)"
+      />
+
+      <text x={kernelX} y={kernelY - 16} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        커널(kernel)
+      </text>
+      {kernelValues.map((v, i) => {
+        const r = Math.floor(i / 3)
+        const c = i % 3
+        return (
+          <g key={i}>
+            <rect
+              x={kernelX + c * kernelCell}
+              y={kernelY + r * kernelCell}
+              width={kernelCell - 2}
+              height={kernelCell - 2}
+              fill="none"
+              stroke={ACCENT}
+              strokeWidth={1.5}
+            />
+            <text
+              x={kernelX + c * kernelCell + (kernelCell - 2) / 2}
+              y={kernelY + r * kernelCell + (kernelCell - 2) / 2 + 5}
+              textAnchor="middle"
+              fill={TEXT}
+              fontSize={13}
+              fontFamily={labelProps.fontFamily}
+            >
+              {v}
+            </text>
+          </g>
+        )
+      })}
+
+      <line
+        x1={kernelCx}
+        y1={kernelY + kernelSize * kernelCell + 4}
+        x2={kernelCx}
+        y2={234}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#conv-arrow)"
+      />
+      <rect x={kernelCx - 25} y={242} width={50} height={38} fill={ACCENT} opacity={0.85} />
+      <text x={kernelCx} y={266} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        새 픽셀
+      </text>
+
+      <text x={160} y={290} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        겹치는 값끼리 곱해 더한 값이 새 픽셀 하나가 됩니다
+      </text>
+    </svg>
+  )
+}
+
+function GradientDescent() {
+  const k = 0.00878
+  const cx = 175
+  const base = 210
+  function y(x: number) {
+    return base - k * (x - cx) * (x - cx)
+  }
+  const curveXs = [40, 70, 100, 130, 160, 175, 190, 220, 250, 280, 300]
+  const curvePath = curveXs.map((x, i) => `${i === 0 ? 'M' : 'L'}${x},${y(x).toFixed(1)}`).join(' ')
+
+  const stepXs = [40, 80, 115, 145, 165, 175]
+  const steps = stepXs.map((x) => [x, y(x)] as [number, number])
+
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <defs>
+        <marker id="gd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={ACCENT} />
+        </marker>
+      </defs>
+      <line x1={30} y1={20} x2={30} y2={230} stroke={GRID} strokeWidth={1} />
+      <line x1={30} y1={230} x2={300} y2={230} stroke={GRID} strokeWidth={1} />
+      <path d={curvePath} fill="none" stroke={LINE} strokeWidth={2} />
+      {steps.slice(0, -1).map(([x, yy], i) => {
+        const [nx, ny] = steps[i + 1]
+        return (
+          <line
+            key={`step-${i}`}
+            x1={x}
+            y1={yy}
+            x2={nx}
+            y2={ny}
+            stroke={ACCENT}
+            strokeWidth={1.5}
+            markerEnd="url(#gd-arrow)"
+          />
+        )
+      })}
+      {steps.map(([x, yy], i) => (
+        <circle
+          key={`dot-${i}`}
+          cx={x}
+          cy={yy}
+          r={i === steps.length - 1 ? 6 : 4}
+          fill={i === steps.length - 1 ? ACCENT : LINE}
+        />
+      ))}
+      <text x={34} y={16} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        손실(loss)
+      </text>
+      <text x={300} y={246} textAnchor="end" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        가중치
+      </text>
+      <text x={cx} y={y(cx) + 34} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        최소값
+      </text>
+    </svg>
+  )
+}
+
+function OverfitCurve() {
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <line x1={30} y1={20} x2={30} y2={230} stroke={GRID} strokeWidth={1} />
+      <line x1={30} y1={230} x2={300} y2={230} stroke={GRID} strokeWidth={1} />
+      <path d="M40,60 C90,140 140,190 300,205" fill="none" stroke={LINE} strokeWidth={2} />
+      <path d="M40,70 C90,150 150,175 220,150 S280,60 300,30" fill="none" stroke={ACCENT} strokeWidth={2} />
+      <line x1={210} y1={30} x2={210} y2={230} stroke={LINE_DIM} strokeWidth={1.5} strokeDasharray="4 3" />
+      <text x={214} y={45} fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        여기서부터
+      </text>
+      <text x={214} y={60} fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        과적합 시작
+      </text>
+      <circle cx={46} cy={26} r={4} fill={LINE} />
+      <text x={56} y={30} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        학습 데이터 오차
+      </text>
+      <circle cx={46} cy={42} r={4} fill={ACCENT} />
+      <text x={56} y={46} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        검증 데이터 오차
+      </text>
+      <text x={300} y={246} textAnchor="end" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        학습 반복 (epoch)
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -631,6 +918,10 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'algorithm-flow': AlgorithmFlow,
   'pixel-grid': PixelGrid,
   'image-filter': ImageFilter,
+  'data-structures': DataStructures,
+  convolution: Convolution,
+  'gradient-descent': GradientDescent,
+  'overfit-curve': OverfitCurve,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

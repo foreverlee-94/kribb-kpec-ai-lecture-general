@@ -14,6 +14,10 @@ export type DiagramId =
   | 'algorithm-flow'
   | 'pixel-grid'
   | 'image-filter'
+  | 'data-structures'
+  | 'convolution'
+  | 'gradient-descent'
+  | 'overfit-curve'
 
 export interface Slide {
   id: string

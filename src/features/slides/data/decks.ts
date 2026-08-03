@@ -4,7 +4,6 @@ import { imageProcessingSlides } from './image-processing'
 import { aiHistorySlides } from './ai-history'
 import { mlDlSlides } from './ml-dl'
 import { llmModernSlides } from './llm-modern'
-import { demoWrapupSlides } from './demo-wrapup'
 
 export const slideDecksByLectureId: Record<string, Slide[]> = {
   'cs-basics': csBasicsSlides,
@@ -12,7 +11,6 @@ export const slideDecksByLectureId: Record<string, Slide[]> = {
   'ai-history': aiHistorySlides,
   'ml-dl': mlDlSlides,
   'llm-modern-ai': llmModernSlides,
-  'demo-wrapup': demoWrapupSlides,
 }
 
 export function getSlideDeck(lectureId: string): Slide[] | undefined {

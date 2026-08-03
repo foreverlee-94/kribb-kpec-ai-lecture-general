@@ -31,10 +31,4 @@ export const lectureNavItems: LectureNavItem[] = [
     path: '/lectures/llm-modern-ai',
     description: '트랜스포머부터 에이전트까지, 생성형 AI의 작동 방식과 한계',
   },
-  {
-    id: 'demo-wrapup',
-    title: '⑥ 데모 & 마무리',
-    path: '/lectures/demo-wrapup',
-    description: '직접 체험하는 데모와 정리 퀴즈',
-  },
 ]

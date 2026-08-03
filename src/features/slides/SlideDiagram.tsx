@@ -952,6 +952,101 @@ function OverfitCurve() {
   )
 }
 
+function ActivationFunctions() {
+  const p1 = { left: 15, right: 135, top: 70, bottom: 170 }
+  const p2 = { left: 185, right: 305, top: 70, bottom: 170 }
+  const reluOriginX = p1.left + ((0 + 4) / 8) * (p1.right - p1.left)
+  const reluTopX = p1.right
+  const sigOriginX = p2.left + ((0 + 4) / 8) * (p2.right - p2.left)
+
+  function sigmoid(x: number) {
+    return 1 / (1 + Math.exp(-x))
+  }
+  const sigXs = [-4, -3, -2, -1, -0.5, 0, 0.5, 1, 2, 3, 4]
+  const sigPath = sigXs
+    .map((x, i) => {
+      const sx = p2.left + ((x + 4) / 8) * (p2.right - p2.left)
+      const sy = p2.bottom - sigmoid(x) * (p2.bottom - p2.top)
+      return `${i === 0 ? 'M' : 'L'}${sx.toFixed(1)},${sy.toFixed(1)}`
+    })
+    .join(' ')
+
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <text x={p1.left} y={30} fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+        ReLU
+      </text>
+      <line x1={p1.left} y1={p1.bottom} x2={p1.right} y2={p1.bottom} stroke={GRID} strokeWidth={1} />
+      <line x1={reluOriginX} y1={p1.bottom} x2={reluOriginX} y2={p1.top} stroke={GRID} strokeWidth={1} />
+      <path
+        d={`M${p1.left},${p1.bottom} L${reluOriginX},${p1.bottom} L${reluTopX},${p1.top}`}
+        fill="none"
+        stroke={LINE}
+        strokeWidth={2}
+      />
+      <circle cx={reluOriginX} cy={p1.bottom} r={3.5} fill={ACCENT} />
+      <text x={p1.left - 5} y={p1.bottom + 14} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        -4
+      </text>
+      <text x={p1.right} y={p1.bottom + 14} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        4
+      </text>
+      <text x={p1.left - 5} y={p1.top + 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        4
+      </text>
+
+      <text x={p2.left} y={30} fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+        시그모이드(Sigmoid)
+      </text>
+      <line x1={p2.left} y1={p2.bottom} x2={p2.right} y2={p2.bottom} stroke={GRID} strokeWidth={1} />
+      <line x1={sigOriginX} y1={p2.bottom} x2={sigOriginX} y2={p2.top} stroke={GRID} strokeWidth={1} />
+      <line
+        x1={p2.left}
+        y1={p2.top}
+        x2={p2.right}
+        y2={p2.top}
+        stroke={LINE_DIM}
+        strokeWidth={1}
+        strokeDasharray="3 3"
+      />
+      <path d={sigPath} fill="none" stroke={LINE} strokeWidth={2} />
+      <circle cx={sigOriginX} cy={(p2.top + p2.bottom) / 2} r={3.5} fill={ACCENT} />
+      <text x={p2.left - 5} y={p2.bottom + 14} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        -4
+      </text>
+      <text x={p2.right} y={p2.bottom + 14} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        4
+      </text>
+      <text x={p2.left - 5} y={p2.top + 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        1
+      </text>
+
+      <SvgFormula
+        x={(p1.left + p1.right) / 2}
+        y={200}
+        math={'\\text{ReLU}(x) = \\max(0, x)'}
+        anchor="middle"
+        width={150}
+        height={22}
+        fontSize={13}
+      />
+      <SvgFormula
+        x={(p2.left + p2.right) / 2}
+        y={200}
+        math={'\\sigma(x) = \\dfrac{1}{1+e^{-x}}'}
+        anchor="middle"
+        width={150}
+        height={22}
+        fontSize={13}
+      />
+
+      <text x={160} y={235} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        출력을 눌러 담는 방식이 서로 다릅니다
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -972,6 +1067,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   convolution: Convolution,
   'gradient-descent': GradientDescent,
   'overfit-curve': OverfitCurve,
+  'activation-functions': ActivationFunctions,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

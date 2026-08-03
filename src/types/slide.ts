@@ -18,6 +18,7 @@ export type DiagramId =
   | 'convolution'
   | 'gradient-descent'
   | 'overfit-curve'
+  | 'activation-functions'
 
 export interface Slide {
   id: string

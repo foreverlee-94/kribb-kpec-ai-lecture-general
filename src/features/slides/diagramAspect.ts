@@ -20,4 +20,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   convolution: 320 / 300,
   'gradient-descent': 320 / 260,
   'overfit-curve': 320 / 260,
+  'activation-functions': 320 / 260,
 }

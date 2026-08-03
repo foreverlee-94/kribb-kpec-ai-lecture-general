@@ -996,7 +996,7 @@ function ActivationFunctions() {
       </text>
 
       <text x={p2.left} y={30} fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
-        시그모이드(Sigmoid)
+        Sigmoid
       </text>
       <line x1={p2.left} y1={p2.bottom} x2={p2.right} y2={p2.bottom} stroke={GRID} strokeWidth={1} />
       <line x1={sigOriginX} y1={p2.bottom} x2={sigOriginX} y2={p2.top} stroke={GRID} strokeWidth={1} />
@@ -1028,16 +1028,16 @@ function ActivationFunctions() {
         anchor="middle"
         width={150}
         height={22}
-        fontSize={13}
+        fontSize={12}
       />
       <SvgFormula
-        x={(p2.left + p2.right) / 2}
+        x={230}
         y={200}
         math={'\\sigma(x) = \\dfrac{1}{1+e^{-x}}'}
         anchor="middle"
         width={150}
         height={22}
-        fontSize={13}
+        fontSize={12}
       />
 
       <text x={160} y={235} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>

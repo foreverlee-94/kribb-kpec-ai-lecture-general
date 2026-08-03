@@ -19,6 +19,7 @@ export type DiagramId =
   | 'gradient-descent'
   | 'overfit-curve'
   | 'activation-functions'
+  | 'minima-landscape'
 
 export interface Slide {
   id: string

@@ -1092,6 +1092,88 @@ function ActivationFunctions() {
   )
 }
 
+function MinimaLandscape() {
+  const points: [number, number][] = [
+    [40, 70],
+    [70, 115],
+    [100, 155],
+    [130, 115],
+    [160, 75],
+    [190, 130],
+    [220, 210],
+    [250, 165],
+    [280, 115],
+    [300, 95],
+  ]
+  const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0]},${p[1]}`).join(' ')
+
+  function landscapeY(x: number) {
+    for (let i = 0; i < points.length - 1; i++) {
+      const [x1, y1] = points[i]
+      const [x2, y2] = points[i + 1]
+      if (x >= x1 && x <= x2) {
+        return y1 + ((y2 - y1) * (x - x1)) / (x2 - x1)
+      }
+    }
+    return points[points.length - 1][1]
+  }
+  const stepXs = [40, 55, 70, 85, 100]
+  const steps = stepXs.map((x) => [x, landscapeY(x)] as [number, number])
+
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <defs>
+        <marker id="minima-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={ACCENT} />
+        </marker>
+      </defs>
+      <line x1={30} y1={20} x2={30} y2={230} stroke={GRID} strokeWidth={1} />
+      <line x1={30} y1={230} x2={300} y2={230} stroke={GRID} strokeWidth={1} />
+      <path d={path} fill="none" stroke={LINE} strokeWidth={2} />
+
+      <path d="M100,155 Q160,30 220,210" fill="none" stroke={LINE_DIM} strokeWidth={1.5} strokeDasharray="4 3" />
+
+      {steps.slice(0, -1).map(([x, y], i) => {
+        const [nx, ny] = steps[i + 1]
+        return (
+          <line
+            key={`step-${i}`}
+            x1={x}
+            y1={y}
+            x2={nx}
+            y2={ny}
+            stroke={ACCENT}
+            strokeWidth={1.5}
+            markerEnd="url(#minima-arrow)"
+          />
+        )
+      })}
+      {steps.slice(0, -1).map(([x, y], i) => (
+        <circle key={`dot-${i}`} cx={x} cy={y} r={3} fill={LINE} />
+      ))}
+
+      <circle cx={100} cy={155} r={5} fill={ACCENT} />
+      <circle cx={220} cy={210} r={6} fill="none" stroke={LINE} strokeWidth={2.5} />
+
+      <text x={34} y={16} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        손실(loss)
+      </text>
+      <circle cx={46} cy={40} r={4} fill={ACCENT} />
+      <text x={56} y={44} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        지역 최소값 — 여기서 멈춤
+      </text>
+      <circle cx={46} cy={58} r={4} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={56} y={62} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        전역 최소값 — 더 낮은 지점
+      </text>
+
+      <text x={300} y={246} textAnchor="end" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        가중치
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -1113,6 +1195,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'gradient-descent': GradientDescent,
   'overfit-curve': OverfitCurve,
   'activation-functions': ActivationFunctions,
+  'minima-landscape': MinimaLandscape,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

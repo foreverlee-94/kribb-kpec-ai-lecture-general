@@ -738,7 +738,7 @@ function DataStructures() {
       </text>
 
       <text x={160} y={230} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        같은 데이터도 담는 방식(자료구조)에 따라 찾는 방법이 달라집니다
+        자료구조에 따라 값을 찾는 방법이 달라집니다
       </text>
     </svg>
   )
@@ -855,7 +855,7 @@ function Convolution() {
       </text>
 
       <text x={160} y={290} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        겹치는 값끼리 곱해 더한 값이 새 픽셀 하나가 됩니다
+        곱해서 더한 값이 새 픽셀이 됩니다
       </text>
     </svg>
   )

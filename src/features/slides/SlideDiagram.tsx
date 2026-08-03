@@ -665,18 +665,19 @@ function ImageFilter() {
 
 function DataStructures() {
   const arrayItems = ['A', 'B', 'C', 'D']
-  const arrayCell = 45
+  const arrayCell = 38
   const arrayStartX = 20
   const arrayY = 60
 
   const kv = [
     { k: 'name', v: '"Amy"' },
     { k: 'age', v: '17' },
-    { k: 'city', v: '"Seoul"' },
+    { k: 'active', v: 'true' },
   ]
   const kvY = 60
   const kvRowH = 40
-  const kvX = 185
+  const kvX = 190
+  const kvWidth = 110
 
   return (
     <svg viewBox="0 0 320 260" className="h-full w-full">
@@ -724,17 +725,17 @@ function DataStructures() {
       </text>
       {kv.map((row, i) => (
         <g key={row.k}>
-          <rect x={kvX} y={kvY + i * kvRowH} width={115} height={kvRowH - 8} rx={4} fill="none" stroke={LINE} strokeWidth={2} />
+          <rect x={kvX} y={kvY + i * kvRowH} width={kvWidth} height={kvRowH - 8} rx={4} fill="none" stroke={LINE} strokeWidth={2} />
           <text x={kvX + 8} y={kvY + i * kvRowH + 21} fill={ACCENT} fontSize={13} fontFamily={labelProps.fontFamily}>
             {row.k}
           </text>
-          <text x={kvX + 70} y={kvY + i * kvRowH + 21} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+          <text x={kvX + 62} y={kvY + i * kvRowH + 21} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
             {row.v}
           </text>
         </g>
       ))}
       <text x={kvX} y={kvY + kv.length * kvRowH + 20} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
-        이름(키)으로 값을 찾음
+        키로 값을 찾음
       </text>
 
       <text x={160} y={230} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>

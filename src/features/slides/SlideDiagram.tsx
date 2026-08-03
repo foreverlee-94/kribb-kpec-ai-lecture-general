@@ -1321,46 +1321,61 @@ function MinimaLandscape() {
 }
 
 function FrequencyFilters() {
-  const cell = 24
+  const cell = 22
+  const inputX = 127
   const colAx = 20
   const colBx = 190
-  const inputY = 30
-  const kernelY = 118
-  const outputY = 206
+  const inputY = 20
+  const kernelY = 140
+  const outputY = 232
 
   const edgeWindow = [40, 40, 220, 40, 40, 220, 40, 40, 220]
-  const flatWindow = [40, 40, 40, 40, 40, 40, 40, 40, 40]
-  const kernelValues = [0, -1, 0, -1, 4, -1, 0, -1, 0]
+  const lowPassKernel = [1, 2, 1, 2, 4, 2, 1, 2, 1]
+  const highPassKernel = [0, -1, 0, -1, 4, -1, 0, -1, 0]
 
   function textColorFor(v: number) {
     return v < 140 ? TEXT : '#16211d'
   }
 
-  const rawEdge = edgeWindow.reduce((acc, v, i) => acc + v * kernelValues[i], 0)
-  const rawFlat = flatWindow.reduce((acc, v, i) => acc + v * kernelValues[i], 0)
-  const outEdge = Math.min(Math.abs(rawEdge), 255)
-  const outFlat = Math.min(Math.abs(rawFlat), 255)
+  const lowPassSum = lowPassKernel.reduce((a, b) => a + b, 0)
+  const rawLowPass = edgeWindow.reduce((acc, v, i) => acc + v * lowPassKernel[i], 0)
+  const outLowPass = Math.round(rawLowPass / lowPassSum)
 
-  function InputGrid({ x, window }: { x: number; window: number[] }) {
+  const rawHighPass = edgeWindow.reduce((acc, v, i) => acc + v * highPassKernel[i], 0)
+  const outHighPass = Math.min(Math.abs(rawHighPass), 255)
+
+  function Grid({
+    x,
+    y,
+    values,
+    filled,
+  }: {
+    x: number
+    y: number
+    values: number[]
+    filled: boolean
+  }) {
     return (
       <>
-        {window.map((v, i) => {
+        {values.map((v, i) => {
           const r = Math.floor(i / 3)
           const c = i % 3
           return (
             <g key={i}>
               <rect
                 x={x + c * cell}
-                y={inputY + r * cell}
+                y={y + r * cell}
                 width={cell - 2}
                 height={cell - 2}
-                fill={`rgb(${v},${v},${v})`}
+                fill={filled ? `rgb(${v},${v},${v})` : 'none'}
+                stroke={filled ? 'none' : ACCENT}
+                strokeWidth={filled ? 0 : 1.5}
               />
               <text
                 x={x + c * cell + (cell - 2) / 2}
-                y={inputY + r * cell + (cell - 2) / 2 + 4}
+                y={y + r * cell + (cell - 2) / 2 + 4}
                 textAnchor="middle"
-                fill={textColorFor(v)}
+                fill={filled ? textColorFor(v) : TEXT}
                 fontSize={10}
                 fontFamily={labelProps.fontFamily}
               >
@@ -1373,40 +1388,7 @@ function FrequencyFilters() {
     )
   }
 
-  function KernelGrid({ x }: { x: number }) {
-    return (
-      <>
-        {kernelValues.map((v, i) => {
-          const r = Math.floor(i / 3)
-          const c = i % 3
-          return (
-            <g key={i}>
-              <rect
-                x={x + c * cell}
-                y={kernelY + r * cell}
-                width={cell - 2}
-                height={cell - 2}
-                fill="none"
-                stroke={ACCENT}
-                strokeWidth={1.5}
-              />
-              <text
-                x={x + c * cell + (cell - 2) / 2}
-                y={kernelY + r * cell + (cell - 2) / 2 + 4}
-                textAnchor="middle"
-                fill={TEXT}
-                fontSize={11}
-                fontFamily={labelProps.fontFamily}
-              >
-                {v}
-              </text>
-            </g>
-          )
-        })}
-      </>
-    )
-  }
-
+  const inputCenter = inputX + (3 * cell - 2) / 2
   const colACenter = colAx + (3 * cell - 2) / 2
   const colBCenter = colBx + (3 * cell - 2) / 2
 
@@ -1418,42 +1400,34 @@ function FrequencyFilters() {
         </marker>
       </defs>
 
-      <text x={colAx} y={20} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
-        경계
+      <text x={inputX} y={12} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        경계 (입력)
       </text>
-      <text x={colBx} y={20} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
-        평평한 부분
-      </text>
-      <InputGrid x={colAx} window={edgeWindow} />
-      <InputGrid x={colBx} window={flatWindow} />
+      <Grid x={inputX} y={inputY} values={edgeWindow} filled />
 
-      <line
-        x1={colACenter}
-        y1={inputY + 3 * cell + 4}
-        x2={colACenter}
-        y2={kernelY - 14}
+      <path
+        d={`M${inputCenter},${inputY + 3 * cell + 4} L${colACenter},${kernelY - 14}`}
+        fill="none"
         stroke={LINE_DIM}
         strokeWidth={1.5}
         markerEnd="url(#freq-arrow)"
       />
-      <line
-        x1={colBCenter}
-        y1={inputY + 3 * cell + 4}
-        x2={colBCenter}
-        y2={kernelY - 14}
+      <path
+        d={`M${inputCenter},${inputY + 3 * cell + 4} L${colBCenter},${kernelY - 14}`}
+        fill="none"
         stroke={LINE_DIM}
         strokeWidth={1.5}
         markerEnd="url(#freq-arrow)"
       />
 
       <text x={colAx} y={kernelY - 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
-        고주파 통과 커널
+        저주파 통과(블러)
       </text>
       <text x={colBx} y={kernelY - 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
-        고주파 통과 커널
+        고주파 통과(엣지)
       </text>
-      <KernelGrid x={colAx} />
-      <KernelGrid x={colBx} />
+      <Grid x={colAx} y={kernelY} values={lowPassKernel} filled={false} />
+      <Grid x={colBx} y={kernelY} values={highPassKernel} filled={false} />
 
       <line
         x1={colACenter}
@@ -1479,7 +1453,7 @@ function FrequencyFilters() {
         y={outputY}
         width={50}
         height={34}
-        fill={`rgb(${outEdge},${outEdge},${outEdge})`}
+        fill={`rgb(${outLowPass},${outLowPass},${outLowPass})`}
         stroke={ACCENT}
         strokeWidth={2.5}
       />
@@ -1487,18 +1461,18 @@ function FrequencyFilters() {
         x={colACenter}
         y={outputY + 22}
         textAnchor="middle"
-        fill={textColorFor(outEdge)}
+        fill={textColorFor(outLowPass)}
         fontSize={14}
         fontFamily={labelProps.fontFamily}
       >
-        {outEdge}
+        {outLowPass}
       </text>
       <rect
         x={colBCenter - 25}
         y={outputY}
         width={50}
         height={34}
-        fill={`rgb(${outFlat},${outFlat},${outFlat})`}
+        fill={`rgb(${outHighPass},${outHighPass},${outHighPass})`}
         stroke={ACCENT}
         strokeWidth={2.5}
       />
@@ -1506,15 +1480,15 @@ function FrequencyFilters() {
         x={colBCenter}
         y={outputY + 22}
         textAnchor="middle"
-        fill={textColorFor(outFlat)}
+        fill={textColorFor(outHighPass)}
         fontSize={14}
         fontFamily={labelProps.fontFamily}
       >
-        {outFlat}
+        {outHighPass}
       </text>
 
-      <text x={160} y={268} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        경계는 통과시키고, 평평한 곳은 차단합니다
+      <text x={160} y={281} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        저주파는 경계를 뭉개고, 고주파는 경계를 드러냅니다
       </text>
     </svg>
   )

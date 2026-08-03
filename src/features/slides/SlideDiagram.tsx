@@ -40,7 +40,7 @@ function SvgFormula({
   }
   const boxX = anchor === 'end' ? x - width : anchor === 'middle' ? x - width / 2 : x
   return (
-    <foreignObject x={boxX} y={y - height / 2} width={width} height={height}>
+    <foreignObject x={boxX} y={y - height / 2} width={width} height={height} style={{ overflow: 'visible' }}>
       <div
         style={{
           color,
@@ -51,6 +51,7 @@ function SvgFormula({
           alignItems: 'center',
           height: '100%',
           whiteSpace: 'nowrap',
+          overflow: 'visible',
         }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
@@ -972,7 +973,7 @@ function ActivationFunctions() {
     .join(' ')
 
   return (
-    <svg viewBox="0 0 320 260" className="h-full w-full">
+    <svg viewBox="0 0 320 300" className="h-full w-full">
       <text x={p1.left} y={30} fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
         ReLU
       </text>
@@ -985,13 +986,30 @@ function ActivationFunctions() {
         strokeWidth={2}
       />
       <circle cx={reluOriginX} cy={p1.bottom} r={3.5} fill={ACCENT} />
-      <text x={p1.left - 5} y={p1.bottom + 14} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={p1.left} y={p1.bottom + 14} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         -4
       </text>
       <text x={p1.right} y={p1.bottom + 14} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         4
       </text>
-      <text x={p1.left - 5} y={p1.top + 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text
+        x={reluOriginX}
+        y={p1.bottom + 14}
+        textAnchor="middle"
+        fill={TEXT_MUTED}
+        fontSize={11}
+        fontFamily={labelProps.fontFamily}
+      >
+        0
+      </text>
+      <text
+        x={reluOriginX - 8}
+        y={p1.top + 4}
+        textAnchor="end"
+        fill={TEXT_MUTED}
+        fontSize={11}
+        fontFamily={labelProps.fontFamily}
+      >
         4
       </text>
 
@@ -1011,36 +1029,63 @@ function ActivationFunctions() {
       />
       <path d={sigPath} fill="none" stroke={LINE} strokeWidth={2} />
       <circle cx={sigOriginX} cy={(p2.top + p2.bottom) / 2} r={3.5} fill={ACCENT} />
-      <text x={p2.left - 5} y={p2.bottom + 14} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={p2.left} y={p2.bottom + 14} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         -4
       </text>
       <text x={p2.right} y={p2.bottom + 14} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         4
       </text>
-      <text x={p2.left - 5} y={p2.top + 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text
+        x={sigOriginX}
+        y={p2.bottom + 14}
+        textAnchor="middle"
+        fill={TEXT_MUTED}
+        fontSize={11}
+        fontFamily={labelProps.fontFamily}
+      >
+        0
+      </text>
+      <text
+        x={sigOriginX - 8}
+        y={p2.top + 4}
+        textAnchor="end"
+        fill={TEXT_MUTED}
+        fontSize={11}
+        fontFamily={labelProps.fontFamily}
+      >
         1
+      </text>
+      <text
+        x={sigOriginX - 8}
+        y={(p2.top + p2.bottom) / 2 + 4}
+        textAnchor="end"
+        fill={TEXT_MUTED}
+        fontSize={11}
+        fontFamily={labelProps.fontFamily}
+      >
+        0.5
       </text>
 
       <SvgFormula
         x={(p1.left + p1.right) / 2}
-        y={200}
+        y={225}
         math={'\\text{ReLU}(x) = \\max(0, x)'}
         anchor="middle"
         width={150}
-        height={22}
+        height={46}
         fontSize={12}
       />
       <SvgFormula
         x={230}
-        y={200}
+        y={225}
         math={'\\sigma(x) = \\dfrac{1}{1+e^{-x}}'}
         anchor="middle"
         width={150}
-        height={22}
+        height={46}
         fontSize={12}
       />
 
-      <text x={160} y={235} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+      <text x={160} y={272} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
         출력을 눌러 담는 방식이 서로 다릅니다
       </text>
     </svg>

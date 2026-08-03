@@ -845,12 +845,26 @@ function Convolution() {
   const gridY = 44
   const cols = 5
   const rows = 5
-  const tones = [LINE, 'rgba(255,255,255,0.22)', LINE_DIM]
   const kernelStartRow = 1
   const kernelStartCol = 1
   const kernelSize = 3
 
+  const colValues = [40, 40, 40, 220, 220]
   const kernelValues = [1, 2, 1, 2, 4, 2, 1, 2, 1]
+  const kernelSum = kernelValues.reduce((a, b) => a + b, 0)
+  const windowValues: number[] = []
+  for (let r = 0; r < kernelSize; r++) {
+    for (let c = 0; c < kernelSize; c++) {
+      windowValues.push(colValues[kernelStartCol + c])
+    }
+  }
+  const weightedSum = windowValues.reduce((acc, v, i) => acc + v * kernelValues[i], 0)
+  const outputValue = Math.round(weightedSum / kernelSum)
+
+  function textColorFor(v: number) {
+    return v < 140 ? TEXT : '#16211d'
+  }
+
   const kernelX = 205
   const kernelY = 64
   const kernelCell = 26
@@ -872,16 +886,37 @@ function Convolution() {
         입력 이미지
       </text>
       {Array.from({ length: rows }).map((_, r) =>
-        Array.from({ length: cols }).map((_, c) => (
-          <rect
-            key={`in-${r}-${c}`}
-            x={gridX + c * cell}
-            y={gridY + r * cell}
-            width={cell - 2}
-            height={cell - 2}
-            fill={tones[(r + c) % tones.length]}
-          />
-        )),
+        Array.from({ length: cols }).map((_, c) => {
+          const v = colValues[c]
+          const inWindow =
+            r >= kernelStartRow &&
+            r < kernelStartRow + kernelSize &&
+            c >= kernelStartCol &&
+            c < kernelStartCol + kernelSize
+          return (
+            <g key={`in-${r}-${c}`}>
+              <rect
+                x={gridX + c * cell}
+                y={gridY + r * cell}
+                width={cell - 2}
+                height={cell - 2}
+                fill={`rgb(${v},${v},${v})`}
+              />
+              {inWindow && (
+                <text
+                  x={gridX + c * cell + (cell - 2) / 2}
+                  y={gridY + r * cell + (cell - 2) / 2 + 4}
+                  textAnchor="middle"
+                  fill={textColorFor(v)}
+                  fontSize={10}
+                  fontFamily={labelProps.fontFamily}
+                >
+                  {v}
+                </text>
+              )}
+            </g>
+          )
+        }),
       )}
       <rect
         x={gridX + kernelStartCol * cell - 2}
@@ -944,13 +979,31 @@ function Convolution() {
         strokeWidth={1.5}
         markerEnd="url(#conv-arrow)"
       />
-      <rect x={kernelCx - 25} y={242} width={50} height={38} fill={ACCENT} opacity={0.85} />
-      <text x={kernelCx} y={266} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
-        새 픽셀
+      <text x={kernelCx} y={228} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        새 픽셀 값
+      </text>
+      <rect
+        x={kernelCx - 25}
+        y={242}
+        width={50}
+        height={38}
+        fill={`rgb(${outputValue},${outputValue},${outputValue})`}
+        stroke={ACCENT}
+        strokeWidth={2.5}
+      />
+      <text
+        x={kernelCx}
+        y={266}
+        textAnchor="middle"
+        fill={textColorFor(outputValue)}
+        fontSize={15}
+        fontFamily={labelProps.fontFamily}
+      >
+        {outputValue}
       </text>
 
       <text x={160} y={290} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        곱해서 더한 값이 새 픽셀이 됩니다
+        결과: ({weightedSum} ÷ {kernelSum}) = {outputValue}
       </text>
     </svg>
   )

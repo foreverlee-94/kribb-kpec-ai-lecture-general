@@ -181,6 +181,9 @@ function SvmMargin() {
       <text x={200} y={90} textAnchor="middle" fill={TEXT} {...labelProps}>
         margin
       </text>
+      <text x={195} y={45} fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        w·x + b = 0
+      </text>
     </svg>
   )
 }
@@ -226,6 +229,9 @@ function DeepNet() {
   ]
   return (
     <svg viewBox="0 0 320 300" className="h-full w-full">
+      <text x={160} y={26} textAnchor="middle" fill={TEXT_MUTED} fontSize={14} fontFamily={labelProps.fontFamily}>
+        a = f(&#x3a3; w·x + b)
+      </text>
       {layers.slice(0, -1).map((layer, li) =>
         layer.flatMap((y1, i) =>
           layers[li + 1].map((y2, j) => (
@@ -868,6 +874,9 @@ function GradientDescent() {
       </text>
       <text x={cx} y={y(cx) + 34} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
         최소값
+      </text>
+      <text x={296} y={40} textAnchor="end" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        &#x3b8; &#x2190; &#x3b8; - &#x3b7;&#x2207;L(&#x3b8;)
       </text>
     </svg>
   )

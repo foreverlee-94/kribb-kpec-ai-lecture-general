@@ -20,6 +20,7 @@ export type DiagramId =
   | 'overfit-curve'
   | 'activation-functions'
   | 'minima-landscape'
+  | 'frequency-filters'
 
 export interface Slide {
   id: string

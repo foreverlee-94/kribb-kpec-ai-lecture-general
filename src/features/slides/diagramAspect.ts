@@ -22,4 +22,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'overfit-curve': 320 / 260,
   'activation-functions': 320 / 300,
   'minima-landscape': 320 / 260,
+  'frequency-filters': 320 / 300,
 }

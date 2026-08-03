@@ -1320,6 +1320,206 @@ function MinimaLandscape() {
   )
 }
 
+function FrequencyFilters() {
+  const cell = 24
+  const colAx = 20
+  const colBx = 190
+  const inputY = 30
+  const kernelY = 118
+  const outputY = 206
+
+  const edgeWindow = [40, 40, 220, 40, 40, 220, 40, 40, 220]
+  const flatWindow = [40, 40, 40, 40, 40, 40, 40, 40, 40]
+  const kernelValues = [0, -1, 0, -1, 4, -1, 0, -1, 0]
+
+  function textColorFor(v: number) {
+    return v < 140 ? TEXT : '#16211d'
+  }
+
+  const rawEdge = edgeWindow.reduce((acc, v, i) => acc + v * kernelValues[i], 0)
+  const rawFlat = flatWindow.reduce((acc, v, i) => acc + v * kernelValues[i], 0)
+  const outEdge = Math.min(Math.abs(rawEdge), 255)
+  const outFlat = Math.min(Math.abs(rawFlat), 255)
+
+  function InputGrid({ x, window }: { x: number; window: number[] }) {
+    return (
+      <>
+        {window.map((v, i) => {
+          const r = Math.floor(i / 3)
+          const c = i % 3
+          return (
+            <g key={i}>
+              <rect
+                x={x + c * cell}
+                y={inputY + r * cell}
+                width={cell - 2}
+                height={cell - 2}
+                fill={`rgb(${v},${v},${v})`}
+              />
+              <text
+                x={x + c * cell + (cell - 2) / 2}
+                y={inputY + r * cell + (cell - 2) / 2 + 4}
+                textAnchor="middle"
+                fill={textColorFor(v)}
+                fontSize={10}
+                fontFamily={labelProps.fontFamily}
+              >
+                {v}
+              </text>
+            </g>
+          )
+        })}
+      </>
+    )
+  }
+
+  function KernelGrid({ x }: { x: number }) {
+    return (
+      <>
+        {kernelValues.map((v, i) => {
+          const r = Math.floor(i / 3)
+          const c = i % 3
+          return (
+            <g key={i}>
+              <rect
+                x={x + c * cell}
+                y={kernelY + r * cell}
+                width={cell - 2}
+                height={cell - 2}
+                fill="none"
+                stroke={ACCENT}
+                strokeWidth={1.5}
+              />
+              <text
+                x={x + c * cell + (cell - 2) / 2}
+                y={kernelY + r * cell + (cell - 2) / 2 + 4}
+                textAnchor="middle"
+                fill={TEXT}
+                fontSize={11}
+                fontFamily={labelProps.fontFamily}
+              >
+                {v}
+              </text>
+            </g>
+          )
+        })}
+      </>
+    )
+  }
+
+  const colACenter = colAx + (3 * cell - 2) / 2
+  const colBCenter = colBx + (3 * cell - 2) / 2
+
+  return (
+    <svg viewBox="0 0 320 300" className="h-full w-full">
+      <defs>
+        <marker id="freq-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={colAx} y={20} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        경계
+      </text>
+      <text x={colBx} y={20} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        평평한 부분
+      </text>
+      <InputGrid x={colAx} window={edgeWindow} />
+      <InputGrid x={colBx} window={flatWindow} />
+
+      <line
+        x1={colACenter}
+        y1={inputY + 3 * cell + 4}
+        x2={colACenter}
+        y2={kernelY - 14}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#freq-arrow)"
+      />
+      <line
+        x1={colBCenter}
+        y1={inputY + 3 * cell + 4}
+        x2={colBCenter}
+        y2={kernelY - 14}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#freq-arrow)"
+      />
+
+      <text x={colAx} y={kernelY - 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        고주파 통과 커널
+      </text>
+      <text x={colBx} y={kernelY - 4} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        고주파 통과 커널
+      </text>
+      <KernelGrid x={colAx} />
+      <KernelGrid x={colBx} />
+
+      <line
+        x1={colACenter}
+        y1={kernelY + 3 * cell + 4}
+        x2={colACenter}
+        y2={outputY - 4}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#freq-arrow)"
+      />
+      <line
+        x1={colBCenter}
+        y1={kernelY + 3 * cell + 4}
+        x2={colBCenter}
+        y2={outputY - 4}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#freq-arrow)"
+      />
+
+      <rect
+        x={colACenter - 25}
+        y={outputY}
+        width={50}
+        height={34}
+        fill={`rgb(${outEdge},${outEdge},${outEdge})`}
+        stroke={ACCENT}
+        strokeWidth={2.5}
+      />
+      <text
+        x={colACenter}
+        y={outputY + 22}
+        textAnchor="middle"
+        fill={textColorFor(outEdge)}
+        fontSize={14}
+        fontFamily={labelProps.fontFamily}
+      >
+        {outEdge}
+      </text>
+      <rect
+        x={colBCenter - 25}
+        y={outputY}
+        width={50}
+        height={34}
+        fill={`rgb(${outFlat},${outFlat},${outFlat})`}
+        stroke={ACCENT}
+        strokeWidth={2.5}
+      />
+      <text
+        x={colBCenter}
+        y={outputY + 22}
+        textAnchor="middle"
+        fill={textColorFor(outFlat)}
+        fontSize={14}
+        fontFamily={labelProps.fontFamily}
+      >
+        {outFlat}
+      </text>
+
+      <text x={160} y={268} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        경계는 통과시키고, 평평한 곳은 차단합니다
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -1342,6 +1542,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'overfit-curve': OverfitCurve,
   'activation-functions': ActivationFunctions,
   'minima-landscape': MinimaLandscape,
+  'frequency-filters': FrequencyFilters,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

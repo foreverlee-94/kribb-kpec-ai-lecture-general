@@ -619,46 +619,139 @@ function PixelGrid() {
 }
 
 function ImageFilter() {
-  const grid = Array.from({ length: 3 }).flatMap((_, r) => Array.from({ length: 3 }).map((_, c) => ({ r, c })))
-  const tones = [LINE, ACCENT, LINE_DIM]
-  const cell = 36
-  function Panel({ x }: { x: number }) {
+  const cell = 32
+  const cols = 4
+  const rows = 3
+  const gridY = 36
+  const panel1X = 16
+  const panel2X = 176
+
+  const originalRow = [40, 40, 220, 220]
+  const blurredRow = [40, 100, 160, 220]
+
+  function textColorFor(v: number) {
+    return v < 140 ? TEXT : '#16211d'
+  }
+
+  function Panel({ x, values, blurred }: { x: number; values: number[]; blurred?: boolean }) {
     return (
-      <g transform={`translate(${x},20)`}>
-        {grid.map(({ r, c }) => (
-          <rect
-            key={`${r}-${c}`}
-            x={c * cell}
-            y={r * cell}
-            width={cell - 2}
-            height={cell - 2}
-            fill={tones[(r + c) % tones.length]}
-          />
-        ))}
+      <g>
+        <g filter={blurred ? 'url(#image-blur)' : undefined}>
+          {Array.from({ length: rows }).flatMap((_, r) =>
+            values.map((v, c) => (
+              <rect
+                key={`${r}-${c}`}
+                x={x + c * cell}
+                y={gridY + r * cell}
+                width={cell - 2}
+                height={cell - 2}
+                fill={`rgb(${v},${v},${v})`}
+              />
+            )),
+          )}
+        </g>
+        {Array.from({ length: rows }).flatMap((_, r) =>
+          values.map((v, c) => (
+            <text
+              key={`t-${r}-${c}`}
+              x={x + c * cell + (cell - 2) / 2}
+              y={gridY + r * cell + (cell - 2) / 2 + 4}
+              textAnchor="middle"
+              fill={textColorFor(v)}
+              fontSize={10}
+              fontFamily={labelProps.fontFamily}
+            >
+              {v}
+            </text>
+          )),
+        )}
+        <rect
+          x={x + cell - 2}
+          y={gridY - 2}
+          width={2 * cell + 2}
+          height={rows * cell + 2}
+          fill="none"
+          stroke={ACCENT}
+          strokeWidth={2}
+        />
       </g>
     )
   }
+
   return (
     <svg viewBox="0 0 320 220" className="h-full w-full">
       <defs>
         <filter id="image-blur">
           <feGaussianBlur stdDeviation="2.4" />
         </filter>
+        <marker id="filter-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
       </defs>
-      <Panel x={20} />
-      <g filter="url(#image-blur)">
-        <Panel x={200} />
-      </g>
-      <text x={64} y={150} textAnchor="middle" fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+
+      <text x={panel1X} y={24} fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
         원본
       </text>
-      <text x={244} y={150} textAnchor="middle" fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+      <text x={panel2X} y={24} fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
         블러 처리
       </text>
-      <line x1={130} y1={65} x2={190} y2={65} stroke={LINE_DIM} strokeWidth={1.5} />
-      <path d="M186,60 L194,65 L186,70 Z" fill={LINE_DIM} />
-      <text x={160} y={190} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        규칙에 따라 픽셀 값을 계산해 만듭니다
+
+      <Panel x={panel1X} values={originalRow} />
+      <Panel x={panel2X} values={blurredRow} blurred />
+
+      <line
+        x1={panel1X + cols * cell + 4}
+        y1={gridY + (rows * cell) / 2}
+        x2={panel2X - 8}
+        y2={gridY + (rows * cell) / 2}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#filter-arrow)"
+      />
+
+      <text
+        x={panel1X + (cols * cell) / 2}
+        y={gridY + rows * cell + 20}
+        textAnchor="middle"
+        fill={TEXT_MUTED}
+        fontSize={12}
+        fontFamily={labelProps.fontFamily}
+      >
+        40 ↔ 220
+      </text>
+      <text
+        x={panel1X + (cols * cell) / 2}
+        y={gridY + rows * cell + 35}
+        textAnchor="middle"
+        fill={ACCENT}
+        fontSize={12}
+        fontFamily={labelProps.fontFamily}
+      >
+        차이 180
+      </text>
+      <text
+        x={panel2X + (cols * cell) / 2}
+        y={gridY + rows * cell + 20}
+        textAnchor="middle"
+        fill={TEXT_MUTED}
+        fontSize={12}
+        fontFamily={labelProps.fontFamily}
+      >
+        100 ↔ 160
+      </text>
+      <text
+        x={panel2X + (cols * cell) / 2}
+        y={gridY + rows * cell + 35}
+        textAnchor="middle"
+        fill={ACCENT}
+        fontSize={12}
+        fontFamily={labelProps.fontFamily}
+      >
+        차이 60
+      </text>
+
+      <text x={160} y={203} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        블러는 경계의 값 차이를 줄입니다
       </text>
     </svg>
   )

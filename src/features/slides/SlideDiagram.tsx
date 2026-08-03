@@ -1,3 +1,4 @@
+import katex from 'katex'
 import type { DiagramId } from '@/types/slide'
 
 const ACCENT = '#ff7759'
@@ -10,6 +11,51 @@ const TEXT_MUTED = 'rgba(242,251,249,0.62)'
 const labelProps = {
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
   fontSize: 16,
+}
+
+function SvgFormula({
+  x,
+  y,
+  math,
+  anchor = 'start',
+  color = TEXT_MUTED,
+  fontSize = 14,
+  width = 160,
+  height = 26,
+}: {
+  x: number
+  y: number
+  math: string
+  anchor?: 'start' | 'middle' | 'end'
+  color?: string
+  fontSize?: number
+  width?: number
+  height?: number
+}) {
+  let html: string
+  try {
+    html = katex.renderToString(math, { throwOnError: false, displayMode: false })
+  } catch {
+    html = math
+  }
+  const boxX = anchor === 'end' ? x - width : anchor === 'middle' ? x - width / 2 : x
+  return (
+    <foreignObject x={boxX} y={y - height / 2} width={width} height={height}>
+      <div
+        style={{
+          color,
+          fontSize,
+          lineHeight: 1,
+          display: 'flex',
+          justifyContent: anchor === 'end' ? 'flex-end' : anchor === 'middle' ? 'center' : 'flex-start',
+          alignItems: 'center',
+          height: '100%',
+          whiteSpace: 'nowrap',
+        }}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </foreignObject>
+  )
 }
 
 function Timeline() {
@@ -181,9 +227,7 @@ function SvmMargin() {
       <text x={200} y={90} textAnchor="middle" fill={TEXT} {...labelProps}>
         margin
       </text>
-      <text x={195} y={45} fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        w·x + b = 0
-      </text>
+      <SvgFormula x={195} y={45} math={'w \\cdot x + b = 0'} width={110} height={24} fontSize={14} />
     </svg>
   )
 }
@@ -229,9 +273,7 @@ function DeepNet() {
   ]
   return (
     <svg viewBox="0 0 320 300" className="h-full w-full">
-      <text x={160} y={26} textAnchor="middle" fill={TEXT_MUTED} fontSize={14} fontFamily={labelProps.fontFamily}>
-        a = f(&#x3a3; w·x + b)
-      </text>
+      <SvgFormula x={160} y={26} math={'a = f\\left(\\sum wx + b\\right)'} anchor="middle" width={200} height={26} fontSize={14} />
       {layers.slice(0, -1).map((layer, li) =>
         layer.flatMap((y1, i) =>
           layers[li + 1].map((y2, j) => (
@@ -875,9 +917,7 @@ function GradientDescent() {
       <text x={cx} y={y(cx) + 34} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
         최소값
       </text>
-      <text x={296} y={40} textAnchor="end" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        &#x3b8; &#x2190; &#x3b8; - &#x3b7;&#x2207;L(&#x3b8;)
-      </text>
+      <SvgFormula x={296} y={40} math={'\\theta \\leftarrow \\theta - \\eta \\nabla L(\\theta)'} anchor="end" width={180} height={24} fontSize={13} />
     </svg>
   )
 }

@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import type { Slide } from '@/types/slide'
 import { SlideDiagram } from '@/features/slides/SlideDiagram'
 import { diagramAspect } from '@/features/slides/diagramAspect'
+import { MixedText } from '@/components/Math'
 
 interface SlideViewerProps {
   slides: Slide[]
@@ -18,7 +19,7 @@ function BulletList({ bullets, className = 'mt-6' }: { bullets: string[]; classN
         <li key={i} className="flex items-start gap-3">
           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-coral" />
           <span className="text-[clamp(0.875rem,0.8333rem+0.2083cqw,1rem)] leading-relaxed text-white/80">
-            {bullet}
+            <MixedText text={bullet} />
           </span>
         </li>
       ))}
@@ -109,7 +110,7 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
 
               {slide.body && (
                 <p className="mt-5 max-w-3xl text-[clamp(0.9375rem,0.875rem+0.3125cqw,1.125rem)] leading-relaxed text-white/80">
-                  {slide.body}
+                  <MixedText text={slide.body} />
                 </p>
               )}
 

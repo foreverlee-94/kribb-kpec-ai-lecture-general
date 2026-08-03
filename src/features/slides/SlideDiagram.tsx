@@ -28,14 +28,17 @@ function Timeline() {
   return (
     <svg viewBox="0 0 320 100" className="h-full w-full">
       <line x1={10} y1={75} x2={310} y2={75} stroke={GRID} strokeWidth={1} />
-      {points.map(([x, label]) => (
-        <g key={label}>
-          <line x1={x} y1={73} x2={x} y2={77} stroke={LINE_DIM} strokeWidth={1} />
-          <text x={x} y={92} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
-            {label}
-          </text>
-        </g>
-      ))}
+      {points.map(([x, label], i) => {
+        const labelX = i === 0 ? x + 7 : i === points.length - 1 ? x - 7 : x
+        return (
+          <g key={label}>
+            <line x1={x} y1={73} x2={x} y2={77} stroke={LINE_DIM} strokeWidth={1} />
+            <text x={labelX} y={92} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+              {label}
+            </text>
+          </g>
+        )
+      })}
       <path d={path} fill="none" stroke={LINE} strokeWidth={1.5} />
       {points.map(([, label, x, y]) => (
         <circle key={`${label}-dot`} cx={x} cy={y} r={2.5} fill={ACCENT} />
@@ -288,7 +291,7 @@ function ScalingCurve() {
     [40, 240, 'GPT-1', 38, 206, 'start'],
     [130, 200, 'GPT-2', 100, 182, 'end'],
     [205, 130, 'GPT-3', 175, 108, 'end'],
-    [270, 55, 'GPT-4~', 290, 44, 'start'],
+    [270, 55, 'GPT-4~', 312, 44, 'end'],
   ]
   return (
     <svg viewBox="0 0 320 280" className="h-full w-full">
@@ -367,6 +370,251 @@ function AgentLoop() {
   )
 }
 
+function Roadmap() {
+  const boxes = [
+    { x: 5, label: '컴퓨터', accent: false },
+    { x: 115, label: '이미지', accent: false },
+    { x: 225, label: 'AI', accent: true },
+  ]
+  const boxWidth = 90
+  const boxY = 30
+  const boxHeight = 50
+  return (
+    <svg viewBox="0 0 320 120" className="h-full w-full">
+      <defs>
+        <marker id="roadmap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+      {boxes.map((b) => (
+        <g key={b.label}>
+          <rect
+            x={b.x}
+            y={boxY}
+            width={boxWidth}
+            height={boxHeight}
+            rx={8}
+            fill="none"
+            stroke={b.accent ? ACCENT : LINE}
+            strokeWidth={b.accent ? 2.5 : 2}
+          />
+          <text x={b.x + boxWidth / 2} y={boxY + boxHeight / 2 + 6} textAnchor="middle" fill={TEXT} {...labelProps}>
+            {b.label}
+          </text>
+        </g>
+      ))}
+      <line x1={95} y1={55} x2={113} y2={55} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#roadmap-arrow)" />
+      <line x1={205} y1={55} x2={223} y2={55} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#roadmap-arrow)" />
+      <text x={160} y={105} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        오늘 하루, 이 순서로 살펴봅니다
+      </text>
+    </svg>
+  )
+}
+
+function BinaryData() {
+  const groups = [
+    { x: 20, label: '텍스트' },
+    { x: 120, label: '이미지' },
+    { x: 220, label: '소리' },
+  ]
+  return (
+    <svg viewBox="0 0 320 280" className="h-full w-full">
+      <text x={30} y={60} fill={TEXT} fontSize={30} fontFamily={labelProps.fontFamily}>
+        13
+      </text>
+      <line x1={80} y1={50} x2={140} y2={50} stroke={LINE_DIM} strokeWidth={1.5} />
+      <path d="M136,45 L144,50 L136,55 Z" fill={LINE_DIM} />
+      <text x={155} y={60} fill={ACCENT} fontSize={30} fontFamily={labelProps.fontFamily}>
+        1101
+      </text>
+      <text x={160} y={95} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        10진수 13 → 2진수 1101
+      </text>
+
+      {groups.map((g) => (
+        <g key={g.label}>
+          <rect x={g.x} y={140} width={80} height={40} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={g.x + 40} y={165} textAnchor="middle" fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+            {g.label}
+          </text>
+          <line x1={g.x + 40} y1={180} x2={g.x + 40} y2={205} stroke={LINE_DIM} strokeWidth={1.5} />
+        </g>
+      ))}
+
+      <rect x={20} y={210} width={280} height={40} rx={6} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <text x={160} y={235} textAnchor="middle" fill={TEXT} fontSize={15} fontFamily={labelProps.fontFamily}>
+        0 1 0 0 1 1 0 1 0 0 1 0 ...
+      </text>
+      <text x={160} y={265} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        결국 모든 데이터는 0과 1로 표현됩니다
+      </text>
+    </svg>
+  )
+}
+
+function AlgorithmFlow() {
+  const steps = [
+    { y: 15, text: '재료 준비', accent: false },
+    { y: 85, text: '순서대로 조리', accent: false },
+    { y: 155, text: '맛 확인', accent: false },
+    { y: 225, text: '완성!', accent: true },
+  ]
+  return (
+    <svg viewBox="0 0 320 300" className="h-full w-full">
+      <defs>
+        <marker id="algo-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+      {steps.map((s, i) => (
+        <g key={s.text}>
+          <rect
+            x={70}
+            y={s.y}
+            width={180}
+            height={45}
+            rx={6}
+            fill="none"
+            stroke={s.accent ? ACCENT : LINE}
+            strokeWidth={s.accent ? 2.5 : 2}
+          />
+          <text x={160} y={s.y + 28} textAnchor="middle" fill={TEXT} fontSize={15} fontFamily={labelProps.fontFamily}>
+            {s.text}
+          </text>
+          {i < steps.length - 1 && (
+            <line
+              x1={160}
+              y1={s.y + 45}
+              x2={160}
+              y2={steps[i + 1].y}
+              stroke={LINE_DIM}
+              strokeWidth={1.5}
+              markerEnd="url(#algo-arrow)"
+            />
+          )}
+        </g>
+      ))}
+      <path
+        d="M250,177 C285,177 285,107 253,107"
+        fill="none"
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        markerEnd="url(#algo-arrow)"
+      />
+      <text x={261} y={145} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        부족하면
+      </text>
+      <text x={261} y={158} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        반복
+      </text>
+    </svg>
+  )
+}
+
+function PixelGrid() {
+  const cols = 6
+  const rows = 6
+  const cell = 25
+  const startX = 20
+  const startY = 30
+  const tones = [LINE, ACCENT, LINE_DIM, 'rgba(255,255,255,0.22)']
+  const calloutRow = 2
+  const calloutCol = 4
+  return (
+    <svg viewBox="0 0 320 300" className="h-full w-full">
+      {Array.from({ length: rows }).map((_, r) =>
+        Array.from({ length: cols }).map((_, c) => (
+          <rect
+            key={`${r}-${c}`}
+            x={startX + c * cell}
+            y={startY + r * cell}
+            width={cell - 2}
+            height={cell - 2}
+            fill={tones[(r + c) % tones.length]}
+          />
+        )),
+      )}
+      <line
+        x1={startX + (calloutCol + 1) * cell}
+        y1={startY + calloutRow * cell + cell / 2}
+        x2={startX + cols * cell + 30}
+        y2={startY + calloutRow * cell + cell / 2}
+        stroke={TEXT_MUTED}
+        strokeWidth={1}
+      />
+      <text
+        x={startX + cols * cell + 34}
+        y={startY + calloutRow * cell + cell / 2 - 8}
+        fill={TEXT}
+        fontSize={13}
+        fontFamily={labelProps.fontFamily}
+      >
+        픽셀 1개 =
+      </text>
+      <text
+        x={startX + cols * cell + 34}
+        y={startY + calloutRow * cell + cell / 2 + 10}
+        fill={TEXT}
+        fontSize={13}
+        fontFamily={labelProps.fontFamily}
+      >
+        R·G·B 숫자 3개
+      </text>
+      <text x={160} y={startY + rows * cell + 30} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        사진을 확대하면 결국 이런 숫자 격자입니다
+      </text>
+    </svg>
+  )
+}
+
+function ImageFilter() {
+  const grid = Array.from({ length: 3 }).flatMap((_, r) => Array.from({ length: 3 }).map((_, c) => ({ r, c })))
+  const tones = [LINE, ACCENT, LINE_DIM]
+  const cell = 36
+  function Panel({ x }: { x: number }) {
+    return (
+      <g transform={`translate(${x},20)`}>
+        {grid.map(({ r, c }) => (
+          <rect
+            key={`${r}-${c}`}
+            x={c * cell}
+            y={r * cell}
+            width={cell - 2}
+            height={cell - 2}
+            fill={tones[(r + c) % tones.length]}
+          />
+        ))}
+      </g>
+    )
+  }
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <filter id="image-blur">
+          <feGaussianBlur stdDeviation="2.4" />
+        </filter>
+      </defs>
+      <Panel x={20} />
+      <g filter="url(#image-blur)">
+        <Panel x={200} />
+      </g>
+      <text x={64} y={150} textAnchor="middle" fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+        원본
+      </text>
+      <text x={244} y={150} textAnchor="middle" fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+        블러 처리
+      </text>
+      <line x1={130} y1={65} x2={190} y2={65} stroke={LINE_DIM} strokeWidth={1.5} />
+      <path d="M186,60 L194,65 L186,70 Z" fill={LINE_DIM} />
+      <text x={160} y={190} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        규칙에 따라 픽셀 값을 계산해 만듭니다
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -378,6 +626,11 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   attention: Attention,
   'scaling-curve': ScalingCurve,
   'agent-loop': AgentLoop,
+  roadmap: Roadmap,
+  'binary-data': BinaryData,
+  'algorithm-flow': AlgorithmFlow,
+  'pixel-grid': PixelGrid,
+  'image-filter': ImageFilter,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

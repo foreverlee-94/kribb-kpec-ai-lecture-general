@@ -9,6 +9,11 @@ export type DiagramId =
   | 'attention'
   | 'scaling-curve'
   | 'agent-loop'
+  | 'roadmap'
+  | 'binary-data'
+  | 'algorithm-flow'
+  | 'pixel-grid'
+  | 'image-filter'
 
 export interface Slide {
   id: string

@@ -11,4 +11,9 @@ export const diagramAspect: Record<DiagramId, number> = {
   attention: 320 / 220,
   'scaling-curve': 320 / 280,
   'agent-loop': 320 / 300,
+  roadmap: 320 / 120,
+  'binary-data': 320 / 280,
+  'algorithm-flow': 320 / 300,
+  'pixel-grid': 320 / 300,
+  'image-filter': 320 / 220,
 }

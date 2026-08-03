@@ -1,8 +1,8 @@
 import type { Slide } from '@/types/slide'
-import { aiHistorySlides } from './ai-history'
+import { fullCourseSlides } from './full-course'
 
 export const slideDecksByLectureId: Record<string, Slide[]> = {
-  intro: aiHistorySlides,
+  intro: fullCourseSlides,
 }
 
 export function getSlideDeck(lectureId: string): Slide[] | undefined {

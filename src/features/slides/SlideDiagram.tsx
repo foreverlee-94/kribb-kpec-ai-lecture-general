@@ -1762,10 +1762,21 @@ function LstmCell() {
         </marker>
       </defs>
 
-      <text x={20} y={16} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <rect
+        x={35}
+        y={18}
+        width={250}
+        height={167}
+        rx={16}
+        fill="rgba(255,255,255,0.03)"
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+      />
+
+      <text x={34} y={16} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         C(t-1)
       </text>
-      <text x={298} y={16} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={288} y={16} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         C(t)
       </text>
       <line x1={20} y1={lineY} x2={300} y2={lineY} stroke={LINE_DIM} strokeWidth={3} />
@@ -1917,7 +1928,7 @@ function LstmCell() {
         strokeWidth={1.5}
         markerEnd="url(#lstm-arrow)"
       />
-      <text x={300} y={100} textAnchor="end" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={288} y={100} fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
         h(t)
       </text>
 

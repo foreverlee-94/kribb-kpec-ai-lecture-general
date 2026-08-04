@@ -1495,104 +1495,115 @@ function FrequencyFilters() {
 }
 
 function RnnSequence() {
-  const cellY = 100
-  const cellXs = [50, 130, 210, 290]
-  const boxHalfW = 24
-  const boxHalfH = 20
+  const rowY = { y: 34, h: 97, x: 160 }
+  const r = { rolled: 15, unrolled: 13 }
+  const rolledCx = 40
+  const cols = [150, 205, 260]
+
+  function Node({
+    cx,
+    cy,
+    radius,
+    label,
+    accent,
+  }: {
+    cx: number
+    cy: number
+    radius: number
+    label: string
+    accent?: boolean
+  }) {
+    return (
+      <g>
+        <circle cx={cx} cy={cy} r={radius} fill="none" stroke={accent ? ACCENT : LINE} strokeWidth={2} />
+        <text x={cx} y={cy + 4} textAnchor="middle" fill={TEXT} fontSize={10} fontFamily={labelProps.fontFamily}>
+          {label}
+        </text>
+      </g>
+    )
+  }
+
+  function VArrow({ cx, cyTop, cyBottom, radius }: { cx: number; cyTop: number; cyBottom: number; radius: number }) {
+    return (
+      <line
+        x1={cx}
+        y1={cyBottom - radius}
+        x2={cx}
+        y2={cyTop + radius}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#rnn-arrow)"
+      />
+    )
+  }
 
   return (
-    <svg viewBox="0 0 320 220" className="h-full w-full">
+    <svg viewBox="0 0 320 225" className="h-full w-full">
       <defs>
         <marker id="rnn-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
           <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
         </marker>
       </defs>
 
-      {cellXs.slice(0, -1).map((x, i) => (
+      <text x={rolledCx} y={12} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        축약형
+      </text>
+      <Node cx={rolledCx} cy={rowY.y} radius={r.rolled} label="Yt" />
+      <Node cx={rolledCx} cy={rowY.h} radius={r.rolled} label="h" accent />
+      <Node cx={rolledCx} cy={rowY.x} radius={r.rolled} label="Xt" />
+      <VArrow cx={rolledCx} cyTop={rowY.h} cyBottom={rowY.x} radius={r.rolled} />
+      <VArrow cx={rolledCx} cyTop={rowY.y} cyBottom={rowY.h} radius={r.rolled} />
+      <path
+        d={`M${rolledCx + 13},${rowY.h - 9} C ${rolledCx + 34},${rowY.h - 9} ${rolledCx + 34},${rowY.h + 9} ${rolledCx + 13},${rowY.h + 9}`}
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        markerEnd="url(#rnn-arrow)"
+      />
+
+      <text x={95} y={rowY.h + 6} textAnchor="middle" fill={TEXT} fontSize={20} fontFamily={labelProps.fontFamily}>
+        =
+      </text>
+
+      <text
+        x={(cols[0] + cols[2]) / 2}
+        y={12}
+        textAnchor="middle"
+        fill={TEXT_MUTED}
+        fontSize={11}
+        fontFamily={labelProps.fontFamily}
+      >
+        시간에 따라 펼친 모습
+      </text>
+      {cols.map((cx, i) => (
+        <g key={`col-${i}`}>
+          <Node cx={cx} cy={rowY.y} radius={r.unrolled} label={`Y${i}`} />
+          <Node cx={cx} cy={rowY.h} radius={r.unrolled} label={`h${i}`} accent />
+          <Node cx={cx} cy={rowY.x} radius={r.unrolled} label={`X${i}`} />
+          <VArrow cx={cx} cyTop={rowY.h} cyBottom={rowY.x} radius={r.unrolled} />
+          <VArrow cx={cx} cyTop={rowY.y} cyBottom={rowY.h} radius={r.unrolled} />
+        </g>
+      ))}
+      {cols.slice(0, -1).map((cx, i) => (
         <line
-          key={`h-${i}`}
-          x1={x + boxHalfW}
-          y1={cellY}
-          x2={cellXs[i + 1] - boxHalfW}
-          y2={cellY}
+          key={`hh-${i}`}
+          x1={cx + r.unrolled}
+          y1={rowY.h}
+          x2={cols[i + 1] - r.unrolled}
+          y2={rowY.h}
           stroke={LINE_DIM}
           strokeWidth={1.5}
           markerEnd="url(#rnn-arrow)"
         />
       ))}
-      {cellXs.slice(0, -1).map((x, i) => (
-        <text
-          key={`hlabel-${i}`}
-          x={(x + cellXs[i + 1]) / 2}
-          y={cellY - 8}
-          textAnchor="middle"
-          fill={TEXT_MUTED}
-          fontSize={11}
-          fontFamily={labelProps.fontFamily}
-        >
-          h
-        </text>
-      ))}
 
-      {cellXs.map((x, i) => (
-        <g key={`cell-${i}`}>
-          <rect
-            x={x - boxHalfW}
-            y={cellY - boxHalfH}
-            width={boxHalfW * 2}
-            height={boxHalfH * 2}
-            rx={6}
-            fill="none"
-            stroke={i === cellXs.length - 1 ? ACCENT : LINE}
-            strokeWidth={2}
-          />
-          <text x={x} y={cellY + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
-            RNN
-          </text>
-          <line
-            x1={x}
-            y1={cellY + boxHalfH + 26}
-            x2={x}
-            y2={cellY + boxHalfH + 4}
-            stroke={LINE_DIM}
-            strokeWidth={1.5}
-            markerEnd="url(#rnn-arrow)"
-          />
-          <text
-            x={x}
-            y={cellY + boxHalfH + 42}
-            textAnchor="middle"
-            fill={TEXT_MUTED}
-            fontSize={12}
-            fontFamily={labelProps.fontFamily}
-          >
-            x{i + 1}
-          </text>
-        </g>
-      ))}
-
-      <line
-        x1={cellXs[cellXs.length - 1]}
-        y1={cellY - boxHalfH - 26}
-        x2={cellXs[cellXs.length - 1]}
-        y2={cellY - boxHalfH - 4}
-        stroke={ACCENT}
-        strokeWidth={1.5}
-        markerEnd="url(#rnn-arrow)"
-      />
-      <text
-        x={cellXs[cellXs.length - 1]}
-        y={cellY - boxHalfH - 32}
-        textAnchor="middle"
-        fill={TEXT}
-        fontSize={12}
-        fontFamily={labelProps.fontFamily}
-      >
-        y
+      <line x1={137} y1={195} x2={283} y2={195} stroke={GRID} strokeWidth={1} markerEnd="url(#rnn-arrow)" />
+      <text x={290} y={199} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        시간
       </text>
 
-      <text x={160} y={205} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
-        은닉 상태로 순서 정보를 기억합니다
+      <text x={160} y={215} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        같은 셀 h가 매 시점 반복해서 사용됩니다
       </text>
     </svg>
   )

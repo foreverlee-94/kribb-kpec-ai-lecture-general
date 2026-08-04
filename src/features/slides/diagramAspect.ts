@@ -23,7 +23,7 @@ export const diagramAspect: Record<DiagramId, number> = {
   'activation-functions': 320 / 300,
   'minima-landscape': 320 / 260,
   'frequency-filters': 320 / 300,
-  'rnn-sequence': 320 / 220,
+  'rnn-sequence': 320 / 225,
   'cnn-layers': 320 / 220,
   'lstm-cell': 320 / 220,
 }

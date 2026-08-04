@@ -21,6 +21,7 @@ export type DiagramId =
   | 'activation-functions'
   | 'minima-landscape'
   | 'frequency-filters'
+  | 'rnn-sequence'
 
 export interface Slide {
   id: string

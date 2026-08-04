@@ -1494,6 +1494,110 @@ function FrequencyFilters() {
   )
 }
 
+function RnnSequence() {
+  const cellY = 100
+  const cellXs = [50, 130, 210, 290]
+  const boxHalfW = 24
+  const boxHalfH = 20
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="rnn-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      {cellXs.slice(0, -1).map((x, i) => (
+        <line
+          key={`h-${i}`}
+          x1={x + boxHalfW}
+          y1={cellY}
+          x2={cellXs[i + 1] - boxHalfW}
+          y2={cellY}
+          stroke={LINE_DIM}
+          strokeWidth={1.5}
+          markerEnd="url(#rnn-arrow)"
+        />
+      ))}
+      {cellXs.slice(0, -1).map((x, i) => (
+        <text
+          key={`hlabel-${i}`}
+          x={(x + cellXs[i + 1]) / 2}
+          y={cellY - 8}
+          textAnchor="middle"
+          fill={TEXT_MUTED}
+          fontSize={11}
+          fontFamily={labelProps.fontFamily}
+        >
+          h
+        </text>
+      ))}
+
+      {cellXs.map((x, i) => (
+        <g key={`cell-${i}`}>
+          <rect
+            x={x - boxHalfW}
+            y={cellY - boxHalfH}
+            width={boxHalfW * 2}
+            height={boxHalfH * 2}
+            rx={6}
+            fill="none"
+            stroke={i === cellXs.length - 1 ? ACCENT : LINE}
+            strokeWidth={2}
+          />
+          <text x={x} y={cellY + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            RNN
+          </text>
+          <line
+            x1={x}
+            y1={cellY + boxHalfH + 26}
+            x2={x}
+            y2={cellY + boxHalfH + 4}
+            stroke={LINE_DIM}
+            strokeWidth={1.5}
+            markerEnd="url(#rnn-arrow)"
+          />
+          <text
+            x={x}
+            y={cellY + boxHalfH + 42}
+            textAnchor="middle"
+            fill={TEXT_MUTED}
+            fontSize={12}
+            fontFamily={labelProps.fontFamily}
+          >
+            x{i + 1}
+          </text>
+        </g>
+      ))}
+
+      <line
+        x1={cellXs[cellXs.length - 1]}
+        y1={cellY - boxHalfH - 26}
+        x2={cellXs[cellXs.length - 1]}
+        y2={cellY - boxHalfH - 4}
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        markerEnd="url(#rnn-arrow)"
+      />
+      <text
+        x={cellXs[cellXs.length - 1]}
+        y={cellY - boxHalfH - 32}
+        textAnchor="middle"
+        fill={TEXT}
+        fontSize={12}
+        fontFamily={labelProps.fontFamily}
+      >
+        y
+      </text>
+
+      <text x={160} y={205} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        은닉 상태로 순서 정보를 기억합니다
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -1517,6 +1621,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'activation-functions': ActivationFunctions,
   'minima-landscape': MinimaLandscape,
   'frequency-filters': FrequencyFilters,
+  'rnn-sequence': RnnSequence,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

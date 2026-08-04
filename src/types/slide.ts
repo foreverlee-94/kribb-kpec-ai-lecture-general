@@ -22,6 +22,8 @@ export type DiagramId =
   | 'minima-landscape'
   | 'frequency-filters'
   | 'rnn-sequence'
+  | 'cnn-layers'
+  | 'lstm-cell'
 
 export interface Slide {
   id: string

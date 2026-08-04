@@ -1598,6 +1598,231 @@ function RnnSequence() {
   )
 }
 
+function CnnLayers() {
+  const tones = [LINE, 'rgba(255,255,255,0.22)', LINE_DIM]
+  const inputCell = 9
+  const inputX = 15
+  const inputY = 90
+
+  const convBase = { x: 95, y: 93, size: 34 }
+  const convOffsets: [number, number][] = [
+    [12, -12],
+    [6, -6],
+    [0, 0],
+  ]
+  const poolBase = { x: 170, y: 98, size: 22 }
+  const poolOffsets: [number, number][] = [
+    [8, -8],
+    [4, -4],
+    [0, 0],
+  ]
+  const fcX = 250
+  const fcYs = [90, 110, 130]
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="cnn-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      {Array.from({ length: 4 }).flatMap((_, r) =>
+        Array.from({ length: 4 }).map((_, c) => (
+          <rect
+            key={`px-${r}-${c}`}
+            x={inputX + c * inputCell}
+            y={inputY + r * inputCell}
+            width={inputCell - 1}
+            height={inputCell - 1}
+            fill={tones[(r + c) % tones.length]}
+          />
+        )),
+      )}
+
+      {convOffsets.map(([dx, dy], i) => (
+        <rect
+          key={`conv-${i}`}
+          x={convBase.x + dx}
+          y={convBase.y + dy}
+          width={convBase.size}
+          height={convBase.size}
+          fill="#003c33"
+          stroke={LINE}
+          strokeWidth={1.5}
+        />
+      ))}
+
+      {poolOffsets.map(([dx, dy], i) => (
+        <rect
+          key={`pool-${i}`}
+          x={poolBase.x + dx}
+          y={poolBase.y + dy}
+          width={poolBase.size}
+          height={poolBase.size}
+          fill="#003c33"
+          stroke={ACCENT}
+          strokeWidth={1.5}
+        />
+      ))}
+
+      <text x={215} y={112} textAnchor="middle" fill={TEXT_MUTED} fontSize={14} fontFamily={labelProps.fontFamily}>
+        ...
+      </text>
+
+      {fcYs.map((y, i) => (
+        <circle key={`fc-${i}`} cx={fcX} cy={y} r={6} fill="none" stroke={LINE} strokeWidth={1.5} />
+      ))}
+
+      <line
+        x1={inputX + 4 * inputCell + 3}
+        y1={108}
+        x2={convBase.x + convOffsets[0][0] - 3}
+        y2={108}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#cnn-arrow)"
+      />
+      <line
+        x1={convBase.x + convOffsets[0][0] + convBase.size + 3}
+        y1={108}
+        x2={poolBase.x + poolOffsets[0][0] - 3}
+        y2={108}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#cnn-arrow)"
+      />
+      <line
+        x1={poolBase.x + poolOffsets[0][0] + poolBase.size + 3}
+        y1={108}
+        x2={202}
+        y2={108}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+      />
+      <line x1={228} y1={108} x2={fcX - 10} y2={108} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#cnn-arrow)" />
+      <line x1={fcX + 6} y1={110} x2={290} y2={110} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#cnn-arrow)" />
+
+      <text x={33} y={155} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        입력
+      </text>
+      <text x={118} y={155} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        합성곱
+      </text>
+      <text x={185} y={155} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        풀링
+      </text>
+      <text x={250} y={155} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        완전연결
+      </text>
+      <text x={292} y={114} fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        출력
+      </text>
+
+      <text x={160} y={195} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        합성곱·풀링을 반복해 특징을 압축합니다
+      </text>
+    </svg>
+  )
+}
+
+function LstmCell() {
+  const lineY = 50
+  const gateY = 120
+  const gateH = 40
+  const gates = [
+    { x: 35, cx: 70, label: '망각' },
+    { x: 125, cx: 160, label: '입력' },
+    { x: 215, cx: 250, label: '출력' },
+  ]
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="lstm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={30} y={30} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        셀 상태
+      </text>
+      <line x1={30} y1={lineY} x2={290} y2={lineY} stroke={LINE_DIM} strokeWidth={3} />
+
+      <circle cx={70} cy={lineY} r={8} fill="#003c33" stroke={ACCENT} strokeWidth={2} />
+      <text x={70} y={lineY + 4} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        &#215;
+      </text>
+      <circle cx={160} cy={lineY} r={8} fill="#003c33" stroke={ACCENT} strokeWidth={2} />
+      <text x={160} y={lineY + 4} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        +
+      </text>
+      <circle cx={250} cy={lineY} r={4} fill={ACCENT} />
+
+      <line
+        x1={254}
+        y1={lineY + 2}
+        x2={280}
+        y2={90}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#lstm-arrow)"
+      />
+      <text x={280} y={106} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        h(t)
+      </text>
+
+      {gates.map((g) => (
+        <g key={g.label}>
+          <line
+            x1={g.cx}
+            y1={gateY}
+            x2={g.cx}
+            y2={lineY + 10}
+            stroke={LINE_DIM}
+            strokeWidth={1.5}
+            markerEnd="url(#lstm-arrow)"
+          />
+          <rect
+            x={g.x}
+            y={gateY}
+            width={70}
+            height={gateH}
+            rx={6}
+            fill="none"
+            stroke={ACCENT}
+            strokeWidth={2}
+          />
+          <text
+            x={g.cx}
+            y={gateY + 18}
+            textAnchor="middle"
+            fill={TEXT}
+            fontSize={14}
+            fontFamily={labelProps.fontFamily}
+          >
+            {g.label}
+          </text>
+          <text
+            x={g.cx}
+            y={gateY + 32}
+            textAnchor="middle"
+            fill={TEXT_MUTED}
+            fontSize={10}
+            fontFamily={labelProps.fontFamily}
+          >
+            게이트
+          </text>
+        </g>
+      ))}
+
+      <text x={160} y={195} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        게이트가 정보를 얼마나 남길지 정합니다
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -1622,6 +1847,8 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'minima-landscape': MinimaLandscape,
   'frequency-filters': FrequencyFilters,
   'rnn-sequence': RnnSequence,
+  'cnn-layers': CnnLayers,
+  'lstm-cell': LstmCell,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

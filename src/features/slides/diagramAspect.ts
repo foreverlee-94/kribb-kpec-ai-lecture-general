@@ -8,7 +8,7 @@ export const diagramAspect: Record<DiagramId, number> = {
   'svm-margin': 320 / 300,
   'compute-data': 320 / 260,
   'deep-net': 320 / 300,
-  attention: 320 / 220,
+  attention: 320 / 240,
   'scaling-curve': 320 / 280,
   'agent-loop': 320 / 300,
   roadmap: 320 / 120,

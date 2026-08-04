@@ -316,20 +316,64 @@ function DeepNet() {
 function Attention() {
   const tokens = ['그', '고양이', '는', '잤다']
   const xs = [40, 120, 200, 270]
+  const boxY = 175
+  const boxH = 34
+  const boxW = 56
+
+  const pairs: [number, number, number][] = [
+    [0, 1, 0.6],
+    [0, 2, 0.2],
+    [0, 3, 0.25],
+    [1, 2, 0.7],
+    [1, 3, 0.9],
+    [2, 3, 0.35],
+  ]
+
   return (
-    <svg viewBox="0 0 320 220" className="h-full w-full">
+    <svg viewBox="0 0 320 240" className="h-full w-full">
+      <text x={160} y={20} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+        Self-Attention
+      </text>
+
+      {pairs.map(([a, b, w], i) => {
+        const xa = xs[a]
+        const xb = xs[b]
+        const dist = Math.abs(xb - xa)
+        const controlY = boxY - (dist * 0.4 + 20)
+        return (
+          <path
+            key={`arc-${i}`}
+            d={`M${xa},${boxY} Q${(xa + xb) / 2},${controlY} ${xb},${boxY}`}
+            fill="none"
+            stroke={ACCENT}
+            strokeWidth={1 + w * 3.5}
+            opacity={0.2 + w * 0.6}
+            strokeLinecap="round"
+          />
+        )
+      })}
+
       {xs.map((x, i) => (
         <g key={tokens[i]}>
-          <rect x={x - 25} y={150} width={50} height={36} rx={4} fill="none" stroke={LINE} strokeWidth={1.5} />
-          <text x={x} y={173} textAnchor="middle" fill={TEXT} {...labelProps}>
+          <rect
+            x={x - boxW / 2}
+            y={boxY}
+            width={boxW}
+            height={boxH}
+            rx={5}
+            fill="#003c33"
+            stroke={LINE}
+            strokeWidth={1.5}
+          />
+          <text x={x} y={boxY + 22} textAnchor="middle" fill={TEXT} {...labelProps}>
             {tokens[i]}
           </text>
+          <circle cx={x} cy={boxY} r={3} fill={ACCENT} />
         </g>
       ))}
-      <path d={`M${xs[3]},150 Q${(xs[3] + xs[1]) / 2},60 ${xs[1]},150`} fill="none" stroke={ACCENT} strokeWidth={2} />
-      <path d={`M${xs[3]},150 Q${(xs[3] + xs[0]) / 2},90 ${xs[0]},150`} fill="none" stroke={LINE} strokeWidth={1.5} />
-      <text x={160} y={35} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
-        self-attention
+
+      <text x={160} y={228} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        선이 굵을수록 강하게 연관됩니다
       </text>
     </svg>
   )

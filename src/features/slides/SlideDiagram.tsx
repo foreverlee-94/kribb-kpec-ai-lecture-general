@@ -1738,32 +1738,34 @@ function CnnLayers() {
 }
 
 function LstmCell() {
-  const lineY = 35
+  const lineY = 28
   const opForgetX = 65
-  const opInputX = 170
-  const branchX = 260
+  const opInputX = 155
+  const branchX = 245
 
-  const gateY = 115
+  const gateY = 130
   const gateH = 26
   const gateW = 46
   const mainGates = [
-    { cx: 65, label: '망각', sub: 'σ' },
-    { cx: 140, label: '입력', sub: 'σ' },
-    { cx: 200, label: '후보', sub: 'tanh' },
+    { cx: 65, label: '망각', sub: 'σ', inX: 50 },
+    { cx: 125, label: '입력', sub: 'σ', inX: 110 },
+    { cx: 185, label: '후보', sub: 'tanh', inX: 170 },
   ]
+  const outputInX = 230
+  const inputLineY = 200
 
   return (
-    <svg viewBox="0 0 320 240" className="h-full w-full">
+    <svg viewBox="0 0 320 270" className="h-full w-full">
       <defs>
         <marker id="lstm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
           <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
         </marker>
       </defs>
 
-      <text x={20} y={20} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={20} y={16} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         C(t-1)
       </text>
-      <text x={280} y={20} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={298} y={16} textAnchor="end" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         C(t)
       </text>
       <line x1={20} y1={lineY} x2={300} y2={lineY} stroke={LINE_DIM} strokeWidth={3} />
@@ -1795,36 +1797,15 @@ function LstmCell() {
         markerEnd="url(#lstm-arrow)"
       />
 
-      <line
-        x1={mainGates[1].cx}
-        y1={gateY}
-        x2={mainGates[1].cx - 8}
-        y2={90}
-        stroke={LINE_DIM}
-        strokeWidth={1.5}
-      />
-      <line
-        x1={mainGates[2].cx}
-        y1={gateY}
-        x2={mainGates[2].cx + 8}
-        y2={90}
-        stroke={LINE_DIM}
-        strokeWidth={1.5}
-      />
-      <circle cx={(mainGates[1].cx + mainGates[2].cx) / 2} cy={90} r={7} fill="#003c33" stroke={ACCENT} strokeWidth={1.5} />
-      <text
-        x={(mainGates[1].cx + mainGates[2].cx) / 2}
-        y={94}
-        textAnchor="middle"
-        fill={TEXT}
-        fontSize={10}
-        fontFamily={labelProps.fontFamily}
-      >
+      <line x1={mainGates[1].cx} y1={gateY} x2={148} y2={97} stroke={LINE_DIM} strokeWidth={1.5} />
+      <line x1={mainGates[2].cx} y1={gateY} x2={162} y2={97} stroke={LINE_DIM} strokeWidth={1.5} />
+      <circle cx={opInputX} cy={91} r={7} fill="#003c33" stroke={ACCENT} strokeWidth={1.5} />
+      <text x={opInputX} y={95} textAnchor="middle" fill={TEXT} fontSize={10} fontFamily={labelProps.fontFamily}>
         &#215;
       </text>
       <line
-        x1={(mainGates[1].cx + mainGates[2].cx) / 2}
-        y1={83}
+        x1={opInputX}
+        y1={84}
         x2={opInputX}
         y2={lineY + 11}
         stroke={LINE_DIM}
@@ -1864,58 +1845,88 @@ function LstmCell() {
           >
             {g.label}
           </text>
+          <line
+            x1={g.inX}
+            y1={inputLineY}
+            x2={g.inX}
+            y2={gateY + gateH + 2}
+            stroke={LINE_DIM}
+            strokeWidth={1.5}
+            markerEnd="url(#lstm-arrow)"
+          />
         </g>
       ))}
 
-      <line x1={branchX} y1={lineY + 4} x2={branchX} y2={62} stroke={LINE_DIM} strokeWidth={1.5} />
-      <rect x={branchX - 20} y={62} width={40} height={22} rx={5} fill="none" stroke={ACCENT} strokeWidth={2} />
-      <text x={branchX} y={77} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <line x1={branchX} y1={lineY + 4} x2={branchX} y2={52} stroke={LINE_DIM} strokeWidth={1.5} />
+      <rect x={branchX - 20} y={52} width={40} height={22} rx={5} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <text x={branchX} y={67} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
         tanh
       </text>
       <line
         x1={branchX}
-        y1={84}
+        y1={74}
         x2={branchX}
-        y2={106}
+        y2={100}
         stroke={LINE_DIM}
         strokeWidth={1.5}
         markerEnd="url(#lstm-arrow)"
       />
-      <circle cx={branchX} cy={115} r={8} fill="#003c33" stroke={ACCENT} strokeWidth={2} />
-      <text x={branchX} y={119} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <circle cx={branchX} cy={108} r={8} fill="#003c33" stroke={ACCENT} strokeWidth={2} />
+      <text x={branchX} y={112} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
         &#215;
       </text>
       <line
         x1={branchX}
-        y1={145}
+        y1={gateY}
         x2={branchX}
-        y2={124}
+        y2={117}
         stroke={LINE_DIM}
         strokeWidth={1.5}
         markerEnd="url(#lstm-arrow)"
       />
-      <rect x={branchX - gateW / 2} y={145} width={gateW} height={gateH} rx={6} fill="none" stroke={ACCENT} strokeWidth={2} />
-      <text x={branchX} y={161} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+      <rect x={branchX - gateW / 2} y={gateY} width={gateW} height={gateH} rx={6} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <text x={branchX} y={gateY + 16} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
         σ
       </text>
-      <text x={branchX} y={145 + gateH + 12} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+      <text
+        x={branchX}
+        y={gateY + gateH + 12}
+        textAnchor="middle"
+        fill={TEXT_MUTED}
+        fontSize={10}
+        fontFamily={labelProps.fontFamily}
+      >
         출력
       </text>
+      <line
+        x1={outputInX}
+        y1={inputLineY}
+        x2={outputInX}
+        y2={gateY + gateH + 2}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#lstm-arrow)"
+      />
 
       <line
         x1={branchX + 8}
-        y1={115}
+        y1={108}
         x2={300}
-        y2={115}
+        y2={108}
         stroke={LINE_DIM}
         strokeWidth={1.5}
         markerEnd="url(#lstm-arrow)"
       />
-      <text x={300} y={111} textAnchor="end" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+      <text x={300} y={100} textAnchor="end" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
         h(t)
       </text>
 
-      <text x={160} y={218} textAnchor="middle" fill={TEXT_MUTED} fontSize={13} fontFamily={labelProps.fontFamily}>
+      <line x1={40} y1={inputLineY} x2={268} y2={inputLineY} stroke={GRID} strokeWidth={1} />
+      <text x={20} y={inputLineY + 16} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        h(t-1), x(t) — 이전 은닉 상태와 지금 입력
+      </text>
+
+      <text x={160} y={252} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
         게이트가 셀 상태를 갱신하고 출력을 만듭니다
       </text>
     </svg>

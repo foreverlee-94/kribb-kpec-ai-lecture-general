@@ -22,7 +22,7 @@ export const diagramAspect: Record<DiagramId, number> = {
   'overfit-curve': 320 / 260,
   'activation-functions': 320 / 300,
   'minima-landscape': 320 / 260,
-  'frequency-filters': 320 / 300,
+  'frequency-filters': 320 / 335,
   'rnn-sequence': 320 / 225,
   'cnn-layers': 320 / 220,
   'lstm-cell': 320 / 270,

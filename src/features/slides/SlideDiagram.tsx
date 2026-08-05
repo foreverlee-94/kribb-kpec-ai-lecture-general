@@ -1381,12 +1381,26 @@ function FrequencyFilters() {
     return v < 140 ? TEXT : '#16211d'
   }
 
-  const lowPassSum = lowPassKernel.reduce((a, b) => a + b, 0)
-  const rawLowPass = edgeWindow.reduce((acc, v, i) => acc + v * lowPassKernel[i], 0)
-  const outLowPass = Math.round(rawLowPass / lowPassSum)
+  function convolveSamePad(input: number[], kernel: number[]) {
+    const at = (r: number, c: number) => (r >= 0 && r < 3 && c >= 0 && c < 3 ? input[r * 3 + c] : 0)
+    const out: number[] = []
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        let sum = 0
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            sum += kernel[(dr + 1) * 3 + (dc + 1)] * at(r + dr, c + dc)
+          }
+        }
+        out.push(sum)
+      }
+    }
+    return out
+  }
 
-  const rawHighPass = edgeWindow.reduce((acc, v, i) => acc + v * highPassKernel[i], 0)
-  const outHighPass = Math.min(Math.abs(rawHighPass), 255)
+  const lowPassSum = lowPassKernel.reduce((a, b) => a + b, 0)
+  const lowPassOut = convolveSamePad(edgeWindow, lowPassKernel).map((v) => Math.round(v / lowPassSum))
+  const highPassOut = convolveSamePad(edgeWindow, highPassKernel).map((v) => Math.min(Math.abs(v), 255))
 
   function Grid({
     x,
@@ -1437,7 +1451,7 @@ function FrequencyFilters() {
   const colBCenter = colBx + (3 * cell - 2) / 2
 
   return (
-    <svg viewBox="0 0 320 300" className="h-full w-full">
+    <svg viewBox="0 0 320 335" className="h-full w-full">
       <defs>
         <marker id="freq-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
           <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
@@ -1492,46 +1506,10 @@ function FrequencyFilters() {
         markerEnd="url(#freq-arrow)"
       />
 
-      <rect
-        x={colACenter - 25}
-        y={outputY}
-        width={50}
-        height={34}
-        fill={`rgb(${outLowPass},${outLowPass},${outLowPass})`}
-        stroke={ACCENT}
-        strokeWidth={2.5}
-      />
-      <text
-        x={colACenter}
-        y={outputY + 22}
-        textAnchor="middle"
-        fill={textColorFor(outLowPass)}
-        fontSize={14}
-        fontFamily={labelProps.fontFamily}
-      >
-        {outLowPass}
-      </text>
-      <rect
-        x={colBCenter - 25}
-        y={outputY}
-        width={50}
-        height={34}
-        fill={`rgb(${outHighPass},${outHighPass},${outHighPass})`}
-        stroke={ACCENT}
-        strokeWidth={2.5}
-      />
-      <text
-        x={colBCenter}
-        y={outputY + 22}
-        textAnchor="middle"
-        fill={textColorFor(outHighPass)}
-        fontSize={14}
-        fontFamily={labelProps.fontFamily}
-      >
-        {outHighPass}
-      </text>
+      <Grid x={colAx} y={outputY} values={lowPassOut} filled />
+      <Grid x={colBx} y={outputY} values={highPassOut} filled />
 
-      <text x={160} y={281} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+      <text x={160} y={outputY + 3 * cell + 20} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
         저주파는 경계를 뭉개고, 고주파는 경계를 드러냅니다
       </text>
     </svg>

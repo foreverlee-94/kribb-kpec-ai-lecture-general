@@ -39,4 +39,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'bert-mlm': 320 / 220,
   'gpt1-clm': 320 / 220,
   'gpt-scale-compare': 320 / 300,
+  'variable-function': 320 / 230,
 }

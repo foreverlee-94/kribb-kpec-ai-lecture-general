@@ -37,6 +37,7 @@ export type DiagramId =
   | 'bert-mlm'
   | 'gpt1-clm'
   | 'gpt-scale-compare'
+  | 'variable-function'
 
 export interface SlideImage {
   src: string

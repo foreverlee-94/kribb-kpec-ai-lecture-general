@@ -2946,6 +2946,61 @@ function GptScaleCompare() {
   )
 }
 
+function VariableFunction() {
+  const leftCx = 80
+  const rightCx = 235
+
+  return (
+    <svg viewBox="0 0 320 230" className="h-full w-full">
+      <defs>
+        <marker id="vf-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={leftCx} y={18} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        변수 (Variable)
+      </text>
+      <rect x={leftCx - 55} y={45} width={110} height={38} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={leftCx} y={69} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        age = 27
+      </text>
+      <line x1={leftCx} y1={88} x2={leftCx} y2={113} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#vf-arrow)" />
+      <text x={leftCx + 8} y={104} fill={TEXT_MUTED} fontSize={9} fontFamily={labelProps.fontFamily}>
+        재할당
+      </text>
+      <rect x={leftCx - 55} y={118} width={110} height={38} rx={6} fill="none" stroke={ACCENT} strokeWidth={2.5} />
+      <text x={leftCx} y={142} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        age = 28
+      </text>
+      <text x={leftCx} y={180} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        재할당하면 값이 바뀜
+      </text>
+
+      <text x={rightCx} y={18} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        함수 (Function)
+      </text>
+      <rect x={rightCx - 45} y={45} width={90} height={32} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={rightCx} y={66} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        x = 3
+      </text>
+      <line x1={rightCx} y1={80} x2={rightCx} y2={98} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#vf-arrow)" />
+      <rect x={rightCx - 70} y={100} width={140} height={40} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={rightCx} y={124} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        double(x) = x×2
+      </text>
+      <line x1={rightCx} y1={143} x2={rightCx} y2={161} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#vf-arrow)" />
+      <rect x={rightCx - 45} y={163} width={90} height={32} rx={6} fill="none" stroke={ACCENT} strokeWidth={2.5} />
+      <text x={rightCx} y={184} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        결과: 6
+      </text>
+      <text x={rightCx} y={210} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        정해진 계산으로 출력을 만듦
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2985,6 +3040,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'bert-mlm': BertMlm,
   'gpt1-clm': Gpt1Clm,
   'gpt-scale-compare': GptScaleCompare,
+  'variable-function': VariableFunction,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

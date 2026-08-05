@@ -1988,6 +1988,93 @@ function LstmCell() {
   )
 }
 
+function XorProblem() {
+  const s = 100
+  const oy = 55
+  const leftOx = 25
+  const rightOx = 195
+
+  function cornerPos(ox: number, x: number, y: number): [number, number] {
+    return [ox + x * s, oy + (1 - y) * s]
+  }
+
+  function Axes({ ox }: { ox: number }) {
+    return (
+      <>
+        <line x1={ox} y1={oy + s + 14} x2={ox} y2={oy - 14} stroke={GRID} strokeWidth={1} />
+        <line x1={ox - 14} y1={oy + s} x2={ox + s + 14} y2={oy + s} stroke={GRID} strokeWidth={1} />
+        <text x={ox + s + 14} y={oy + s - 14} textAnchor="end" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+          x1
+        </text>
+        <text x={ox} y={oy - 18} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+          x2
+        </text>
+      </>
+    )
+  }
+
+  function Points({ ox }: { ox: number }) {
+    const pts: [number, number, number][] = [
+      [0, 0, 0],
+      [1, 0, 1],
+      [0, 1, 1],
+      [1, 1, 0],
+    ]
+    return (
+      <>
+        {pts.map(([x, y, cls]) => {
+          const [cx, cy] = cornerPos(ox, x, y)
+          return (
+            <g key={`${ox}-${x}-${y}`}>
+              {cls === 1 ? (
+                <circle cx={cx} cy={cy} r={7} fill={ACCENT} />
+              ) : (
+                <circle cx={cx} cy={cy} r={7} fill="none" stroke={LINE} strokeWidth={2} />
+              )}
+              <text x={cx + 11} y={cy + 4} textAnchor="start" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+                {cls}
+              </text>
+            </g>
+          )
+        })}
+      </>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 320 230" className="h-full w-full">
+      <text x={leftOx + s / 2} y={22} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        직선 하나로는 분리 불가
+      </text>
+      <Axes ox={leftOx} />
+      <line
+        x1={leftOx - 16}
+        y1={oy + s / 2}
+        x2={leftOx + s + 16}
+        y2={oy + s / 2}
+        stroke={LINE_DIM}
+        strokeWidth={2}
+        strokeDasharray="5 4"
+      />
+      <Points ox={leftOx} />
+
+      <text x={rightOx + s / 2} y={22} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        경계 2개(은닉층)로 해결
+      </text>
+      <Axes ox={rightOx} />
+      <path d="M209,41 L309,141 L281,169 L181,69 Z" fill={ACCENT} fillOpacity={0.16} stroke={ACCENT} strokeWidth={1.5} />
+      <Points ox={rightOx} />
+
+      <text x={leftOx + s / 2} y={oy + s + 40} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        어느 쪽에도 0과 1이 섞임
+      </text>
+      <text x={rightOx + s / 2} y={oy + s + 40} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        띠 안쪽에만 정답 1이 모임
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2014,6 +2101,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'rnn-sequence': RnnSequence,
   'cnn-layers': CnnLayers,
   'lstm-cell': LstmCell,
+  'xor-problem': XorProblem,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

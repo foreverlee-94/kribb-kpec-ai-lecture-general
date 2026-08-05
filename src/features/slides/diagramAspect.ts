@@ -26,4 +26,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'rnn-sequence': 320 / 225,
   'cnn-layers': 320 / 220,
   'lstm-cell': 320 / 270,
+  'xor-problem': 320 / 230,
 }

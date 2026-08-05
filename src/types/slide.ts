@@ -24,6 +24,7 @@ export type DiagramId =
   | 'rnn-sequence'
   | 'cnn-layers'
   | 'lstm-cell'
+  | 'xor-problem'
 
 export interface Slide {
   id: string

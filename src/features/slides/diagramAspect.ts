@@ -31,4 +31,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'backprop-graph': 320 / 240,
   'backprop-numeric': 320 / 240,
   'transformer-architecture': 320 / 390,
+  'encode-decode-analogy': 320 / 190,
 }

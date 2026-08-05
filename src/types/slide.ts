@@ -29,6 +29,7 @@ export type DiagramId =
   | 'backprop-graph'
   | 'backprop-numeric'
   | 'transformer-architecture'
+  | 'encode-decode-analogy'
 
 export interface Slide {
   id: string

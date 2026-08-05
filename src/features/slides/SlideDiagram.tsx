@@ -2446,6 +2446,69 @@ function TransformerArchitecture() {
   )
 }
 
+function EncodeDecodeAnalogy() {
+  const boxY = 72
+  const boxH = 40
+  const boxW = 80
+  const boxes = [
+    { cx: 50, category: '원본 메시지', label: 'HELLO' },
+    { cx: 160, category: '인코딩된 표현', label: 'KHOOR' },
+    { cx: 270, category: '복원된 메시지', label: 'HELLO' },
+  ]
+
+  return (
+    <svg viewBox="0 0 320 190" className="h-full w-full">
+      <defs>
+        <marker id="ed-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      {boxes.map((b) => (
+        <g key={b.cx}>
+          <text x={b.cx} y={38} textAnchor="middle" fill={TEXT_MUTED} fontSize={9} fontFamily={labelProps.fontFamily}>
+            {b.category}
+          </text>
+          <rect x={b.cx - boxW / 2} y={boxY - boxH / 2} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={b.cx} y={boxY + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            {b.label}
+          </text>
+        </g>
+      ))}
+
+      <line
+        x1={boxes[0].cx + boxW / 2}
+        y1={boxY}
+        x2={boxes[1].cx - boxW / 2}
+        y2={boxY}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#ed-arrow)"
+      />
+      <line
+        x1={boxes[1].cx + boxW / 2}
+        y1={boxY}
+        x2={boxes[2].cx - boxW / 2}
+        y2={boxY}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#ed-arrow)"
+      />
+
+      <text x={105} y={107} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        인코딩(+3)
+      </text>
+      <text x={215} y={107} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        디코딩(-3)
+      </text>
+
+      <text x={160} y={150} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        오토인코더·트랜스포머도 이 구조를 씁니다
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2477,6 +2540,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'backprop-graph': BackpropGraph,
   'backprop-numeric': BackpropNumeric,
   'transformer-architecture': TransformerArchitecture,
+  'encode-decode-analogy': EncodeDecodeAnalogy,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

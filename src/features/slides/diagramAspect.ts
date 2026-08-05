@@ -34,4 +34,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'encode-decode-analogy': 320 / 190,
   'output-layer-compare': 320 / 240,
   'softmax-example': 320 / 280,
+  'onehot-vector': 320 / 260,
 }

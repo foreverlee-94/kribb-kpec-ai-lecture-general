@@ -32,6 +32,7 @@ export type DiagramId =
   | 'encode-decode-analogy'
   | 'output-layer-compare'
   | 'softmax-example'
+  | 'onehot-vector'
 
 export interface SlideImage {
   src: string

@@ -2614,6 +2614,84 @@ function SoftmaxExample() {
   )
 }
 
+function OnehotVector() {
+  const cols = [
+    { x: 80, label: 'A' },
+    { x: 160, label: 'B' },
+    { x: 240, label: 'C' },
+  ]
+  const predicted = [0.659, 0.242, 0.099]
+  const trueLabel = [1, 0, 0]
+  const boxW = 70
+  const boxH = 40
+
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <text x={160} y={20} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        예측 확률 (softmax 출력)
+      </text>
+      {cols.map((c, i) => (
+        <g key={`pred-${c.x}`}>
+          <rect
+            x={c.x - boxW / 2}
+            y={35}
+            width={boxW}
+            height={boxH}
+            rx={6}
+            fill="none"
+            stroke={i === 0 ? ACCENT : LINE}
+            strokeWidth={2}
+          />
+          <text x={c.x} y={59} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            {predicted[i].toFixed(3)}
+          </text>
+          <text x={c.x} y={95} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+            {c.label}
+          </text>
+        </g>
+      ))}
+
+      <text x={160} y={130} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        정답 (원핫 벡터)
+      </text>
+      {cols.map((c, i) => (
+        <g key={`true-${c.x}`}>
+          <rect
+            x={c.x - boxW / 2}
+            y={145}
+            width={boxW}
+            height={boxH}
+            rx={6}
+            fill={trueLabel[i] === 1 ? ACCENT : 'none'}
+            stroke={trueLabel[i] === 1 ? 'none' : LINE}
+            strokeWidth={trueLabel[i] === 1 ? 0 : 2}
+          />
+          <text
+            x={c.x}
+            y={169}
+            textAnchor="middle"
+            fill={trueLabel[i] === 1 ? '#16211d' : TEXT}
+            fontSize={15}
+            fontFamily={labelProps.fontFamily}
+          >
+            {trueLabel[i]}
+          </text>
+          <text x={c.x} y={205} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+            {c.label}
+          </text>
+        </g>
+      ))}
+
+      <text x={160} y={235} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        Cross-Entropy = -log(0.659) ≈ 0.417
+      </text>
+      <text x={160} y={252} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        나머지 항은 정답이 0이라 모두 사라짐
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2648,6 +2726,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'encode-decode-analogy': EncodeDecodeAnalogy,
   'output-layer-compare': OutputLayerCompare,
   'softmax-example': SoftmaxExample,
+  'onehot-vector': OnehotVector,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

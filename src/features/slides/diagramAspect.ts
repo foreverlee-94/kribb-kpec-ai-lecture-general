@@ -35,4 +35,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'output-layer-compare': 320 / 240,
   'softmax-example': 320 / 280,
   'onehot-vector': 320 / 260,
+  'tokenizer-example': 320 / 220,
 }

@@ -33,6 +33,7 @@ export type DiagramId =
   | 'output-layer-compare'
   | 'softmax-example'
   | 'onehot-vector'
+  | 'tokenizer-example'
 
 export interface SlideImage {
   src: string

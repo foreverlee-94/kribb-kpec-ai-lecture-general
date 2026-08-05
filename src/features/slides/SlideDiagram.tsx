@@ -2692,6 +2692,54 @@ function OnehotVector() {
   )
 }
 
+function TokenizerExample() {
+  const tokens = [
+    { cx: 65, label: 'un', id: '403' },
+    { cx: 160, label: 'believ', id: '12891' },
+    { cx: 255, label: 'ably', id: '2295' },
+  ]
+  const boxW = 85
+  const boxH = 40
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="tok-arrow" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,0 L5,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={160} y={20} textAnchor="middle" fill={TEXT} fontSize={15} fontFamily={labelProps.fontFamily}>
+        "unbelievably"
+      </text>
+
+      <line x1={160} y1={32} x2={160} y2={65} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#tok-arrow)" />
+      <text x={185} y={53} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        토크나이저 (BPE)
+      </text>
+
+      {tokens.map((t) => (
+        <g key={t.cx}>
+          <rect x={t.cx - boxW / 2} y={80} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={t.cx} y={104} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            {t.label}
+          </text>
+          <text x={t.cx} y={140} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+            {t.id}
+          </text>
+        </g>
+      ))}
+
+      <text x={160} y={175} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        토큰 ID 배열: [403, 12891, 2295]
+      </text>
+      <text x={160} y={195} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        (실제 조각·번호는 토크나이저마다 다른 예시입니다)
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2727,6 +2775,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'output-layer-compare': OutputLayerCompare,
   'softmax-example': SoftmaxExample,
   'onehot-vector': OnehotVector,
+  'tokenizer-example': TokenizerExample,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

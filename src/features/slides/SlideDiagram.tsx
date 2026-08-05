@@ -2075,6 +2075,93 @@ function XorProblem() {
   )
 }
 
+function XorNetwork() {
+  const x1 = { x: 40, y: 70 }
+  const x2 = { x: 40, y: 230 }
+  const h1 = { x: 170, y: 70 }
+  const h2 = { x: 170, y: 230 }
+  const y = { x: 280, y: 150 }
+
+  const edges: [{ x: number; y: number }, { x: number; y: number }][] = [
+    [x1, h1],
+    [x1, h2],
+    [x2, h1],
+    [x2, h2],
+  ]
+
+  return (
+    <svg viewBox="0 0 320 300" className="h-full w-full">
+      <text x={160} y={18} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        모든 입력 → 은닉 가중치 = 1
+      </text>
+
+      {edges.map((edge, i) => (
+        <line
+          key={`in-${i}`}
+          x1={edge[0].x}
+          y1={edge[0].y}
+          x2={edge[1].x}
+          y2={edge[1].y}
+          stroke={GRID}
+          strokeWidth={1.5}
+        />
+      ))}
+      <line x1={h1.x} y1={h1.y} x2={y.x} y2={y.y} stroke={LINE} strokeWidth={2} />
+      <line x1={h2.x} y1={h2.y} x2={y.x} y2={y.y} stroke={LINE} strokeWidth={2} />
+
+      <text x={225} y={97} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        w=+1
+      </text>
+      <text x={225} y={193} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        w=-1
+      </text>
+
+      <circle cx={x1.x} cy={x1.y} r={16} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={x1.x} y={x1.y + 5} textAnchor="middle" fill={TEXT} {...labelProps}>
+        x1
+      </text>
+      <circle cx={x2.x} cy={x2.y} r={16} fill="none" stroke={LINE} strokeWidth={2} />
+      <text x={x2.x} y={x2.y + 5} textAnchor="middle" fill={TEXT} {...labelProps}>
+        x2
+      </text>
+
+      <circle cx={h1.x} cy={h1.y} r={20} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <text x={h1.x} y={h1.y + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        OR
+      </text>
+      <text x={h1.x} y={h1.y + 34} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        b=-0.5
+      </text>
+
+      <circle cx={h2.x} cy={h2.y} r={20} fill="none" stroke={ACCENT} strokeWidth={2} />
+      <text x={h2.x} y={h2.y + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        AND
+      </text>
+      <text x={h2.x} y={h2.y + 34} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        b=-1.5
+      </text>
+
+      <circle cx={y.x} cy={y.y} r={20} fill="none" stroke={ACCENT} strokeWidth={2.5} />
+      <text x={y.x} y={y.y + 5} textAnchor="middle" fill={TEXT} fontSize={14} fontFamily={labelProps.fontFamily}>
+        y
+      </text>
+      <text x={y.x} y={y.y + 34} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        b=-0.5
+      </text>
+
+      <text x={40} y={290} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        입력
+      </text>
+      <text x={170} y={290} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        은닉층
+      </text>
+      <text x={280} y={290} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        출력
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2102,6 +2189,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'cnn-layers': CnnLayers,
   'lstm-cell': LstmCell,
   'xor-problem': XorProblem,
+  'xor-network': XorNetwork,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

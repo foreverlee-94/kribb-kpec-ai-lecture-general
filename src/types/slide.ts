@@ -25,6 +25,7 @@ export type DiagramId =
   | 'cnn-layers'
   | 'lstm-cell'
   | 'xor-problem'
+  | 'xor-network'
 
 export interface Slide {
   id: string

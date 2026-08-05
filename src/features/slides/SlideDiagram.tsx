@@ -1350,11 +1350,11 @@ function MinimaLandscape() {
       </text>
       <circle cx={46} cy={40} r={4} fill={ACCENT} />
       <text x={56} y={44} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
-        지역 최소값 — 여기서 멈춤
+        지역 최소값 | 여기서 멈춤
       </text>
       <circle cx={46} cy={58} r={4} fill="none" stroke={LINE} strokeWidth={2} />
       <text x={56} y={62} fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
-        전역 최소값 — 더 낮은 지점
+        전역 최소값 | 더 낮은 지점
       </text>
 
       <text x={300} y={246} textAnchor="end" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
@@ -1956,7 +1956,7 @@ function LstmCell() {
 
       <line x1={40} y1={inputLineY} x2={268} y2={inputLineY} stroke={GRID} strokeWidth={1} />
       <text x={20} y={inputLineY + 16} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
-        h(t-1), x(t) — 이전 은닉 상태와 지금 입력
+        h(t-1), x(t) | 이전 은닉 상태와 지금 입력
       </text>
 
       <text x={160} y={252} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
@@ -2932,7 +2932,7 @@ function GptScaleCompare() {
   return (
     <svg viewBox="0 0 320 300" className="h-full w-full">
       <Card y={15} title="GPT-1 (2018)" lines={['파라미터: 약 1.17억 개', '미세조정 필요 (작업마다 추가 학습)']} />
-      <Card y={100} title="GPT-2 (2019)" lines={['파라미터: 약 15억 개', '제로샷 — 미세조정 없이 다양한 작업']} />
+      <Card y={100} title="GPT-2 (2019)" lines={['파라미터: 약 15억 개', '제로샷 | 미세조정 없이 다양한 작업']} />
       <Card
         y={185}
         title="GPT-3 (2020)"

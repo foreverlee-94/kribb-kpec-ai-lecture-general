@@ -2487,6 +2487,133 @@ function EncodeDecodeAnalogy() {
   )
 }
 
+function OutputLayerCompare() {
+  const cardW = 280
+  const cardH = 95
+  const cardX = 20
+
+  function Card({
+    y,
+    title,
+    lines,
+  }: {
+    y: number
+    title: string
+    lines: string[]
+  }) {
+    return (
+      <g>
+        <rect x={cardX} y={y} width={cardW} height={cardH} rx={8} fill="none" stroke={LINE} strokeWidth={2} />
+        <text x={cardX + 14} y={y + 24} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+          {title}
+        </text>
+        {lines.map((line, i) => (
+          <text
+            key={i}
+            x={cardX + 14}
+            y={y + 46 + i * 20}
+            fill={TEXT_MUTED}
+            fontSize={11}
+            fontFamily={labelProps.fontFamily}
+          >
+            {line}
+          </text>
+        ))}
+      </g>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 320 240" className="h-full w-full">
+      <Card
+        y={20}
+        title="회귀 (Regression)"
+        lines={['활성화: 없음(항등함수)', '출력: 실수 값 하나 (예: 가격, 온도)', '손실 함수: MSE']}
+      />
+      <Card
+        y={130}
+        title="분류 (Classification)"
+        lines={['활성화: 시그모이드(이진) / 소프트맥스(다중)', '출력: 클래스별 확률(합 = 1)', '손실 함수: Cross-Entropy']}
+      />
+    </svg>
+  )
+}
+
+function SoftmaxExample() {
+  const logits = [
+    { x: 80, z: 'z1=2.0', p: 0.659 },
+    { x: 160, z: 'z2=1.0', p: 0.242 },
+    { x: 240, z: 'z3=0.1', p: 0.099 },
+  ]
+  const baseline = 230
+  const maxBarHeight = 110
+  const barW = 50
+
+  return (
+    <svg viewBox="0 0 320 280" className="h-full w-full">
+      <defs>
+        <marker id="softmax-arrow" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,0 L5,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={160} y={18} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        소프트맥스: 로짓을 확률로
+      </text>
+      <SvgFormula
+        x={160}
+        y={50}
+        anchor="middle"
+        math={'\\text{softmax}(z_i) = \\dfrac{e^{z_i}}{\\sum_j e^{z_j}}'}
+        width={260}
+        height={34}
+        fontSize={13}
+      />
+
+      {logits.map((l) => (
+        <text key={l.x} x={l.x} y={92} textAnchor="middle" fill={TEXT} {...labelProps}>
+          {l.z}
+        </text>
+      ))}
+
+      <line x1={160} y1={100} x2={160} y2={130} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#softmax-arrow)" />
+      <text x={176} y={120} fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        softmax
+      </text>
+
+      {logits.map((l, i) => {
+        const barH = l.p * maxBarHeight
+        const top = baseline - barH
+        return (
+          <g key={l.x}>
+            <rect
+              x={l.x - barW / 2}
+              y={top}
+              width={barW}
+              height={barH}
+              fill={i === 0 ? ACCENT : 'none'}
+              stroke={i === 0 ? 'none' : LINE}
+              strokeWidth={i === 0 ? 0 : 2}
+            />
+            <text x={l.x} y={top - 8} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+              {l.p.toFixed(3)}
+            </text>
+            <text x={l.x} y={baseline + 18} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+              {['A', 'B', 'C'][i]}
+            </text>
+          </g>
+        )
+      })}
+
+      <line x1={40} y1={baseline} x2={280} y2={baseline} stroke={GRID} strokeWidth={1} />
+
+      <text x={160} y={266} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        합계 = 1.000
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2519,6 +2646,8 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'backprop-numeric': BackpropNumeric,
   'transformer-architecture': TransformerArchitecture,
   'encode-decode-analogy': EncodeDecodeAnalogy,
+  'output-layer-compare': OutputLayerCompare,
+  'softmax-example': SoftmaxExample,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

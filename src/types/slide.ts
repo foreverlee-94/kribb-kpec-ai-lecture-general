@@ -30,6 +30,8 @@ export type DiagramId =
   | 'backprop-numeric'
   | 'transformer-architecture'
   | 'encode-decode-analogy'
+  | 'output-layer-compare'
+  | 'softmax-example'
 
 export interface SlideImage {
   src: string

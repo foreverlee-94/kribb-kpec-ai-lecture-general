@@ -36,6 +36,7 @@ export type DiagramId =
   | 'tokenizer-example'
   | 'bert-mlm'
   | 'gpt1-clm'
+  | 'gpt-scale-compare'
 
 export interface SlideImage {
   src: string

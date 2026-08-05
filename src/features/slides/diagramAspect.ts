@@ -38,4 +38,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'tokenizer-example': 320 / 220,
   'bert-mlm': 320 / 220,
   'gpt1-clm': 320 / 220,
+  'gpt-scale-compare': 320 / 300,
 }

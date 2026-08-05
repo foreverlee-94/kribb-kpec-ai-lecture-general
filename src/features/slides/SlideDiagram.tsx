@@ -2882,6 +2882,70 @@ function Gpt1Clm() {
   )
 }
 
+function GptScaleCompare() {
+  const cardW = 280
+  const cardH = 75
+  const cardX = 20
+
+  function Card({
+    y,
+    title,
+    lines,
+    accent = false,
+  }: {
+    y: number
+    title: string
+    lines: string[]
+    accent?: boolean
+  }) {
+    return (
+      <g>
+        <rect
+          x={cardX}
+          y={y}
+          width={cardW}
+          height={cardH}
+          rx={8}
+          fill="none"
+          stroke={accent ? ACCENT : LINE}
+          strokeWidth={accent ? 2.5 : 2}
+        />
+        <text x={cardX + 14} y={y + 22} fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+          {title}
+        </text>
+        {lines.map((line, i) => (
+          <text
+            key={i}
+            x={cardX + 14}
+            y={y + 42 + i * 20}
+            fill={TEXT_MUTED}
+            fontSize={11}
+            fontFamily={labelProps.fontFamily}
+          >
+            {line}
+          </text>
+        ))}
+      </g>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 320 300" className="h-full w-full">
+      <Card y={15} title="GPT-1 (2018)" lines={['파라미터: 약 1.17억 개', '미세조정 필요 (작업마다 추가 학습)']} />
+      <Card y={100} title="GPT-2 (2019)" lines={['파라미터: 약 15억 개', '제로샷 — 미세조정 없이 다양한 작업']} />
+      <Card
+        y={185}
+        title="GPT-3 (2020)"
+        lines={['파라미터: 약 1,750억 개', '퓨샷 인컨텍스트 러닝 (예시만으로 수행)']}
+        accent
+      />
+      <text x={160} y={285} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        모델이 커질수록 학습 없이 할 수 있는 일이 늘어남
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2920,6 +2984,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'tokenizer-example': TokenizerExample,
   'bert-mlm': BertMlm,
   'gpt1-clm': Gpt1Clm,
+  'gpt-scale-compare': GptScaleCompare,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

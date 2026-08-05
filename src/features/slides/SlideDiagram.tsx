@@ -2740,6 +2740,75 @@ function TokenizerExample() {
   )
 }
 
+function BertMlm() {
+  const tokens = [
+    { cx: 45, label: '나는' },
+    { cx: 120, label: '[MASK]' },
+    { cx: 195, label: '를' },
+    { cx: 270, label: '좋아한다' },
+  ]
+  const boxW = 65
+  const boxH = 40
+  const boxY = 70
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="bert-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={160} y={20} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        BERT: 마스크된 토큰 예측 (MLM)
+      </text>
+
+      {tokens.map((t, i) => (
+        <g key={t.cx}>
+          <rect
+            x={t.cx - boxW / 2}
+            y={boxY}
+            width={boxW}
+            height={boxH}
+            rx={6}
+            fill="none"
+            stroke={i === 1 ? ACCENT : LINE}
+            strokeWidth={i === 1 ? 2.5 : 2}
+          />
+          <text x={t.cx} y={boxY + 24} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+            {t.label}
+          </text>
+        </g>
+      ))}
+
+      <path
+        d={`M${tokens[0].cx},${boxY + boxH + 5} Q${(tokens[0].cx + tokens[1].cx) / 2},${boxY + boxH + 38} ${tokens[1].cx},${boxY + boxH + 5}`}
+        fill="none"
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#bert-arrow)"
+      />
+      <path
+        d={`M${tokens[3].cx},${boxY + boxH + 5} Q${(tokens[3].cx + tokens[1].cx) / 2},${boxY + boxH + 38} ${tokens[1].cx},${boxY + boxH + 5}`}
+        fill="none"
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#bert-arrow)"
+      />
+
+      <text x={160} y={165} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        양방향 문맥(왼쪽+오른쪽)으로 [MASK] 예측
+      </text>
+      <text x={160} y={190} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        예측: 고양이
+      </text>
+      <text x={160} y={208} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        (GPT는 왼쪽 문맥만 보고 다음 토큰을 예측)
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2776,6 +2845,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'softmax-example': SoftmaxExample,
   'onehot-vector': OnehotVector,
   'tokenizer-example': TokenizerExample,
+  'bert-mlm': BertMlm,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

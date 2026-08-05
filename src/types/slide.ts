@@ -34,6 +34,7 @@ export type DiagramId =
   | 'softmax-example'
   | 'onehot-vector'
   | 'tokenizer-example'
+  | 'bert-mlm'
 
 export interface SlideImage {
   src: string

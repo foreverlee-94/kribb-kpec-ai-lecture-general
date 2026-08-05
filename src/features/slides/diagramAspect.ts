@@ -36,4 +36,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'softmax-example': 320 / 280,
   'onehot-vector': 320 / 260,
   'tokenizer-example': 320 / 220,
+  'bert-mlm': 320 / 220,
 }

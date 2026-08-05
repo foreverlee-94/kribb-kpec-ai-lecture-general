@@ -276,8 +276,8 @@ function DeepNet() {
     <svg viewBox="0 0 320 300" className="h-full w-full">
       <SvgFormula x={160} y={26} math={'a = f\\left(\\sum wx + b\\right)'} anchor="middle" width={200} height={26} fontSize={14} />
       {layers.slice(0, -1).map((layer, li) =>
-        layer.flatMap((y1, i) =>
-          layers[li + 1].map((y2, j) => (
+        layer.slice(1).flatMap((y1, i) =>
+          layers[li + 1].slice(1).map((y2, j) => (
             <line
               key={`${li}-${i}-${j}`}
               x1={layer[0]}

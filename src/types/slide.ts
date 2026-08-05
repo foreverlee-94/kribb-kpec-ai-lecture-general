@@ -31,6 +31,14 @@ export type DiagramId =
   | 'transformer-architecture'
   | 'encode-decode-analogy'
 
+export interface SlideImage {
+  src: string
+  alt: string
+  aspect: number
+  credit: string
+  creditUrl?: string
+}
+
 export interface Slide {
   id: string
   title: string
@@ -38,6 +46,7 @@ export interface Slide {
   bullets?: string[]
   note?: string
   diagram?: DiagramId
+  image?: SlideImage
 }
 
 export interface SlideDeck {

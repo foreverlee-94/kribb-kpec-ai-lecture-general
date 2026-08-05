@@ -117,14 +117,38 @@ export function SlideViewer({ slides, currentIndex, onNavigate, lectureId }: Sli
               {slide.bullets && <BulletList bullets={slide.bullets} />}
             </div>
 
-            {slide.diagram && (
+            {slide.diagram ? (
               <div
                 style={{ aspectRatio: diagramAspect[slide.diagram] }}
                 className="w-full min-h-32 rounded-lg border border-white/10 bg-white/5 p-3"
               >
                 <SlideDiagram id={slide.diagram} />
               </div>
-            )}
+            ) : slide.image ? (
+              <div className="w-full min-h-32 rounded-lg border border-white/10 bg-white/5 p-3">
+                <img
+                  src={slide.image.src}
+                  alt={slide.image.alt}
+                  style={{ aspectRatio: slide.image.aspect }}
+                  className="w-full rounded object-contain"
+                />
+                <p className="mt-2 text-[11px] text-white/40">
+                  출처:{' '}
+                  {slide.image.creditUrl ? (
+                    <a
+                      href={slide.image.creditUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline hover:text-white/60"
+                    >
+                      {slide.image.credit}
+                    </a>
+                  ) : (
+                    slide.image.credit
+                  )}
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

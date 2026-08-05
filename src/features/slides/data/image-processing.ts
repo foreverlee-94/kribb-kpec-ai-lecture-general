@@ -61,6 +61,39 @@ export const imageProcessingSlides: Slide[] = [
     ],
   },
   {
+    id: 'img-highpass-example',
+    title: '고주파 통과 필터 실전 예시: 소벨(Sobel) 엣지 검출',
+    body: '오른쪽 사진처럼, 고주파 통과 필터를 사진 전체에 적용하면 색이 급격히 바뀌는 경계(엣지)만 남고 나머지는 사라집니다.',
+    image: {
+      src: 'https://jameshfisher.com/2020/08/31/edge-detection-with-sobel-filters/example.png',
+      alt: '소벨 필터로 원본 사진의 엣지를 검출한 결과 예시',
+      aspect: 640 / 480,
+      credit: 'jameshfisher.com',
+      creditUrl: 'https://jameshfisher.com/2020/08/31/edge-detection-with-sobel-filters/',
+    },
+    bullets: [
+      '소벨(Sobel) 필터 — 앞서 본 엣지 검출 커널을 가로·세로 두 방향으로 확장해 경계를 더 정확히 찾아내는 대표적인 고주파 통과 필터',
+      '하늘·벽처럼 평평한 영역은 값이 거의 0이 되어 검게 사라지고, 물체의 윤곽선처럼 값이 급격히 바뀌는 부분만 밝게 남음',
+      '이렇게 뽑아낸 경계선은 사물 인식, 이미지 분할(segmentation) 등 다음 단계 처리의 입력으로 자주 활용됨',
+    ],
+  },
+  {
+    id: 'img-lowpass-example',
+    title: '저주파 통과 필터 실전 예시: 블러(가우시안) 처리',
+    body: '오른쪽 사진처럼, 저주파 통과 필터를 사진 전체에 적용하면 경계와 세부 무늬가 부드럽게 뭉개지고 전체적인 색과 형태만 남습니다.',
+    image: {
+      src: 'https://miro.medium.com/v2/resize:fit:1196/1*yssLYvMTmBaNzZWL2QvVmA.png',
+      alt: '저주파 통과(블러) 필터를 적용한 전후 비교 예시',
+      aspect: 598 / 297,
+      credit: 'Medium (miro.medium.com)',
+    },
+    bullets: [
+      '저주파 통과 필터는 세밀한 경계나 잡음(고주파 성분)을 제거하고, 완만하게 변하는 색상·밝기(저주파 성분)만 남김',
+      '오른쪽 예시처럼 잡음 제거, 사진 보정의 "부드럽게" 효과, 다음 단계 처리 전 노이즈를 줄이는 전처리 등에 널리 사용됨',
+      '앞서 본 3×3 커널을 픽셀 하나가 아니라 사진 전체에 반복 적용(컨볼루션)하면, 이런 식으로 사진 전체가 블러 처리됨',
+    ],
+  },
+  {
     id: 'img-encode-decode',
     title: '인코더-디코더의 원형: 암호화와 복호화',
     body: '오른쪽 도식처럼, 원본을 다른 형태로 바꾸는 암호화(인코딩)와 그것을 다시 원래대로 되돌리는 복호화(디코딩)는, 이후 AI에서 자주 만나게 될 "인코더-디코더" 구조와 같은 원리입니다.',

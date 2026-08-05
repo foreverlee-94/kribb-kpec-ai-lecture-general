@@ -35,6 +35,7 @@ export type DiagramId =
   | 'onehot-vector'
   | 'tokenizer-example'
   | 'bert-mlm'
+  | 'gpt1-clm'
 
 export interface SlideImage {
   src: string

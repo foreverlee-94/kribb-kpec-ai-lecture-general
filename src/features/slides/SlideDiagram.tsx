@@ -2809,6 +2809,79 @@ function BertMlm() {
   )
 }
 
+function Gpt1Clm() {
+  const known = [
+    { cx: 55, label: '나는' },
+    { cx: 150, label: '고양이를' },
+  ]
+  const predicted = { cx: 255, label: '좋아한다' }
+  const boxW = 80
+  const boxH = 40
+  const boxY = 70
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="gpt1-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      <text x={160} y={20} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        GPT-1: 다음 토큰 예측으로 사전학습 (CLM)
+      </text>
+
+      {known.map((t) => (
+        <g key={t.cx}>
+          <rect x={t.cx - boxW / 2} y={boxY} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={t.cx} y={boxY + 24} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+            {t.label}
+          </text>
+        </g>
+      ))}
+      <rect
+        x={predicted.cx - boxW / 2}
+        y={boxY}
+        width={boxW}
+        height={boxH}
+        rx={6}
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={2.5}
+        strokeDasharray="5 3"
+      />
+      <text x={predicted.cx} y={boxY + 24} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        {predicted.label}
+      </text>
+
+      <path
+        d={`M${known[0].cx},${boxY + boxH + 5} Q${(known[0].cx + predicted.cx) / 2},${boxY + boxH + 38} ${predicted.cx},${boxY + boxH + 5}`}
+        fill="none"
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#gpt1-arrow)"
+      />
+      <path
+        d={`M${known[1].cx},${boxY + boxH + 5} Q${(known[1].cx + predicted.cx) / 2},${boxY + boxH + 22} ${predicted.cx},${boxY + boxH + 5}`}
+        fill="none"
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#gpt1-arrow)"
+      />
+
+      <text x={160} y={165} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        왼쪽 문맥만 보고 다음 토큰 예측 (인과적/Causal)
+      </text>
+      <text x={160} y={190} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        예측: 좋아한다
+      </text>
+      <text x={160} y={208} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        (BERT는 양방향 문맥을 모두 사용)
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2846,6 +2919,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'onehot-vector': OnehotVector,
   'tokenizer-example': TokenizerExample,
   'bert-mlm': BertMlm,
+  'gpt1-clm': Gpt1Clm,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

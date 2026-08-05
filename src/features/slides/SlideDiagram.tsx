@@ -2162,6 +2162,193 @@ function XorNetwork() {
   )
 }
 
+function BackpropGraph() {
+  const boxY = 90
+  const boxH = 42
+  const boxW = 72
+  const boxes = [
+    { cx: 60, label: 'z = wx+b' },
+    { cx: 160, label: 'a = f(z)' },
+    { cx: 260, label: 'L(a,y)' },
+  ]
+
+  return (
+    <svg viewBox="0 0 320 240" className="h-full w-full">
+      <defs>
+        <marker id="bp-fwd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+        <marker id="bp-bwd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={ACCENT} />
+        </marker>
+      </defs>
+
+      <text x={160} y={22} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        순전파(forward) →
+      </text>
+
+      {boxes.map((b) => (
+        <g key={b.cx}>
+          <rect x={b.cx - boxW / 2} y={boxY - boxH / 2} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={b.cx} y={boxY + 4} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+            {b.label}
+          </text>
+        </g>
+      ))}
+
+      <line
+        x1={boxes[0].cx + boxW / 2}
+        y1={boxY}
+        x2={boxes[1].cx - boxW / 2}
+        y2={boxY}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#bp-fwd-arrow)"
+      />
+      <line
+        x1={boxes[1].cx + boxW / 2}
+        y1={boxY}
+        x2={boxes[2].cx - boxW / 2}
+        y2={boxY}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#bp-fwd-arrow)"
+      />
+
+      <line
+        x1={boxes[1].cx - boxW / 2}
+        y1={150}
+        x2={boxes[0].cx + boxW / 2}
+        y2={150}
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        markerEnd="url(#bp-bwd-arrow)"
+      />
+      <line
+        x1={boxes[2].cx - boxW / 2}
+        y1={150}
+        x2={boxes[1].cx + boxW / 2}
+        y2={150}
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        markerEnd="url(#bp-bwd-arrow)"
+      />
+
+      <text x={110} y={140} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        ∂a/∂z
+      </text>
+      <text x={210} y={140} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        ∂L/∂a
+      </text>
+
+      <text x={160} y={175} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        ← 역전파(기울기 전달)
+      </text>
+
+      <text x={160} y={210} textAnchor="middle" fill={TEXT} fontSize={12} fontFamily={labelProps.fontFamily}>
+        ∂L/∂w = (∂L/∂a)·(∂a/∂z)·(∂z/∂w)
+      </text>
+    </svg>
+  )
+}
+
+function BackpropNumeric() {
+  const boxY = 75
+  const boxH = 40
+  const boxW = 72
+  const boxes = [
+    { cx: 60, label: 'z = 1.0' },
+    { cx: 160, label: 'a = 0.731' },
+    { cx: 260, label: 'L = 0.036' },
+  ]
+
+  return (
+    <svg viewBox="0 0 320 240" className="h-full w-full">
+      <defs>
+        <marker id="bpn-fwd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+        <marker id="bpn-bwd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={ACCENT} />
+        </marker>
+      </defs>
+
+      <text x={160} y={16} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        x=2, w=0.5, b=0, 목표값 y=1
+      </text>
+
+      {boxes.map((b) => (
+        <g key={b.cx}>
+          <rect x={b.cx - boxW / 2} y={boxY - boxH / 2} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={b.cx} y={boxY + 4} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+            {b.label}
+          </text>
+        </g>
+      ))}
+
+      <line
+        x1={boxes[0].cx + boxW / 2}
+        y1={boxY}
+        x2={boxes[1].cx - boxW / 2}
+        y2={boxY}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#bpn-fwd-arrow)"
+      />
+      <line
+        x1={boxes[1].cx + boxW / 2}
+        y1={boxY}
+        x2={boxes[2].cx - boxW / 2}
+        y2={boxY}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerEnd="url(#bpn-fwd-arrow)"
+      />
+
+      <line
+        x1={boxes[1].cx - boxW / 2}
+        y1={130}
+        x2={boxes[0].cx + boxW / 2}
+        y2={130}
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        markerEnd="url(#bpn-bwd-arrow)"
+      />
+      <line
+        x1={boxes[2].cx - boxW / 2}
+        y1={130}
+        x2={boxes[1].cx + boxW / 2}
+        y2={130}
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        markerEnd="url(#bpn-bwd-arrow)"
+      />
+
+      <text x={110} y={120} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        ∂a/∂z=0.197
+      </text>
+      <text x={210} y={120} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        ∂L/∂a=-0.269
+      </text>
+
+      <text x={160} y={155} textAnchor="middle" fill={TEXT_MUTED} fontSize={12} fontFamily={labelProps.fontFamily}>
+        ← 역전파(기울기 전달)
+      </text>
+
+      <text x={160} y={190} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+        ∂L/∂w = -0.269×0.197×2 = -0.106
+      </text>
+      <text x={160} y={212} textAnchor="middle" fill={ACCENT} fontSize={11} fontFamily={labelProps.fontFamily}>
+        w ← 0.5 - 0.1×(-0.106) = 0.511
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2190,6 +2377,8 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'lstm-cell': LstmCell,
   'xor-problem': XorProblem,
   'xor-network': XorNetwork,
+  'backprop-graph': BackpropGraph,
+  'backprop-numeric': BackpropNumeric,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

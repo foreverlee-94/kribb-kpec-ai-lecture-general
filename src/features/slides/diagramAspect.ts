@@ -28,4 +28,6 @@ export const diagramAspect: Record<DiagramId, number> = {
   'lstm-cell': 320 / 270,
   'xor-problem': 320 / 230,
   'xor-network': 320 / 300,
+  'backprop-graph': 320 / 240,
+  'backprop-numeric': 320 / 240,
 }

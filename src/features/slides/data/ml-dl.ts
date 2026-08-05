@@ -97,6 +97,30 @@ export const mlDlSlides: Slide[] = [
     ],
   },
   {
+    id: 'ml-backprop',
+    title: '역전파란 무엇인가: 연쇄 법칙으로 기울기 전달',
+    body: '오른쪽 도식처럼, 역전파는 손실에서 출발해 연쇄 법칙(chain rule)을 이용해 각 가중치가 손실에 미친 영향(기울기)을 출력층에서 입력층 방향으로 거꾸로 계산하는 과정입니다.',
+    diagram: 'backprop-graph',
+    bullets: [
+      '순전파(Forward pass) — 입력이 $z=wx+b \\to a=f(z) \\to L=\\text{loss}(a,y)$ 순서로 각 층을 통과하며 최종 손실값까지 계산됨',
+      '연쇄 법칙(Chain rule) — 여러 함수가 합성되어 있을 때 전체 미분은 각 구간의 미분을 곱한 것과 같음 — $z \\to a \\to L$처럼 이어진 함수의 기울기도 같은 방식으로 곱해서 구함',
+      '역전파(Backward pass) — 출력층의 오차 $\\partial L/\\partial a$에서 시작해 이 곱셈을 반대 방향($L \\to a \\to z$)으로 층마다 거슬러 전파하며, 한 번의 역방향 계산으로 모든 가중치의 기울기를 동시에 얻음',
+      '이렇게 구한 기울기 $\\partial L/\\partial w$를 갱신 규칙 $w \\leftarrow w-\\eta\\,\\partial L/\\partial w$에 대입해 가중치를 손실이 줄어드는 방향으로 조금씩 이동시킴 — 다음 슬라이드에서 실제 숫자로 끝까지 계산해봅니다',
+    ],
+  },
+  {
+    id: 'ml-backprop-example',
+    title: '역전파 예시: 뉴런 하나로 끝까지 계산해보기',
+    body: '오른쪽 도식처럼, $x=2$, $w=0.5$, $b=0$인 뉴런 하나에 실제 숫자를 넣어 순전파와 역전파를 끝까지 계산해보면 전체 과정이 분명해집니다.',
+    diagram: 'backprop-numeric',
+    bullets: [
+      '순전파 — $z=wx+b=0.5\\times2+0=1.0 \\to a=\\sigma(z)=0.731 \\to L=\\tfrac12(a-y)^2=0.036$ (목표값 $y=1$)',
+      '역전파 1단계 — $\\partial L/\\partial a = a-y = 0.731-1=-0.269$, 예측이 목표보다 얼마나·어느 방향으로 틀렸는지를 나타냄',
+      '역전파 2단계 — $\\partial a/\\partial z=a(1-a)=0.731\\times0.269=0.197$, 시그모이드 자신의 기울기 — 앞서 본 기울기 소실이 여기서 비롯됨',
+      '연쇄 법칙으로 합치면 — $\\partial L/\\partial w=(\\partial L/\\partial a)(\\partial a/\\partial z)(\\partial z/\\partial w)=(-0.269)(0.197)(2)\\approx-0.106$, 학습률 $\\eta=0.1$이면 $w \\leftarrow 0.5-0.1\\times(-0.106)=0.511$로 갱신됨',
+    ],
+  },
+  {
     id: 'ml-minima',
     title: '경사하강법의 함정: 지역 최소값과 전역 최소값',
     body: '오른쪽 그래프처럼, 손실 지형에는 여러 개의 골짜기가 있을 수 있어 경사하강법이 가장 낮은 지점이 아니라 가까운 골짜기에 멈춰버릴 수 있습니다.',

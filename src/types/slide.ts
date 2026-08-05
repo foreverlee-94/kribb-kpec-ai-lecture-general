@@ -26,6 +26,8 @@ export type DiagramId =
   | 'lstm-cell'
   | 'xor-problem'
   | 'xor-network'
+  | 'backprop-graph'
+  | 'backprop-numeric'
 
 export interface Slide {
   id: string

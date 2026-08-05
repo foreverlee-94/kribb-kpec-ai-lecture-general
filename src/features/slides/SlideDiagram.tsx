@@ -2105,7 +2105,7 @@ function XorNetwork() {
 
       <circle cx={h1.x} cy={h1.y} r={20} fill="none" stroke={ACCENT} strokeWidth={2} />
       <text x={h1.x} y={h1.y + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
-        OR
+        h1
       </text>
       <text x={h1.x} y={h1.y + 34} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         b=-0.5
@@ -2113,7 +2113,7 @@ function XorNetwork() {
 
       <circle cx={h2.x} cy={h2.y} r={20} fill="none" stroke={ACCENT} strokeWidth={2} />
       <text x={h2.x} y={h2.y + 5} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
-        AND
+        h2
       </text>
       <text x={h2.x} y={h2.y + 34} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
         b=-1.5

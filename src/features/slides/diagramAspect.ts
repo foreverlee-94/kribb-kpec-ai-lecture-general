@@ -30,4 +30,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'xor-network': 320 / 300,
   'backprop-graph': 320 / 240,
   'backprop-numeric': 320 / 240,
+  'transformer-architecture': 320 / 390,
 }

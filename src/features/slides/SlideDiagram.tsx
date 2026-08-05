@@ -2349,6 +2349,103 @@ function BackpropNumeric() {
   )
 }
 
+function TransformerArchitecture() {
+  const encX = 75
+  const decX = 245
+  const boxW = 130
+  const boxH = 36
+
+  function Box({ cx, cy, label, fontSize = 11 }: { cx: number; cy: number; label: string; fontSize?: number }) {
+    return (
+      <g>
+        <rect x={cx - boxW / 2} y={cy - boxH / 2} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+        <text x={cx} y={cy + 4} textAnchor="middle" fill={TEXT} fontSize={fontSize} fontFamily={labelProps.fontFamily}>
+          {label}
+        </text>
+      </g>
+    )
+  }
+
+  function VArrow({ x, y1, y2 }: { x: number; y1: number; y2: number }) {
+    return <line x1={x} y1={y1} x2={x} y2={y2} stroke={LINE_DIM} strokeWidth={1.5} markerEnd="url(#tf-arrow)" />
+  }
+
+  return (
+    <svg viewBox="0 0 320 390" className="h-full w-full">
+      <defs>
+        <marker id="tf-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+        <marker id="tf-cross-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={ACCENT} />
+        </marker>
+      </defs>
+
+      <text x={encX} y={15} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        인코더
+      </text>
+      <text x={decX} y={15} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        디코더
+      </text>
+
+      <text x={decX} y={48} textAnchor="middle" fill={TEXT} fontSize={11} fontFamily={labelProps.fontFamily}>
+        출력 확률
+      </text>
+
+      <Box cx={decX} cy={95} label="Linear + Softmax" fontSize={10} />
+      <Box cx={decX} cy={150} label="Feed Forward" />
+      <Box cx={encX} cy={205} label="Feed Forward" />
+      <Box cx={decX} cy={205} label="Encoder-Decoder Attn" fontSize={9} />
+      <Box cx={encX} cy={260} label="Self-Attention" />
+      <Box cx={decX} cy={260} label="Masked Self-Attn" fontSize={10} />
+
+      <text x={encX} y={298} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        ×N
+      </text>
+      <text x={decX} y={298} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        ×N
+      </text>
+
+      <text x={encX} y={330} textAnchor="middle" fill={TEXT_MUTED} fontSize={9} fontFamily={labelProps.fontFamily}>
+        입력 임베딩+위치 인코딩
+      </text>
+      <text x={decX} y={330} textAnchor="middle" fill={TEXT_MUTED} fontSize={9} fontFamily={labelProps.fontFamily}>
+        출력 임베딩+위치 인코딩
+      </text>
+
+      <text x={encX} y={368} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        입력 문장
+      </text>
+      <text x={decX} y={368} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        출력 문장(한 칸 밀림)
+      </text>
+
+      <VArrow x={encX} y1={361} y2={337} />
+      <VArrow x={decX} y1={361} y2={337} />
+      <VArrow x={encX} y1={323} y2={281} />
+      <VArrow x={decX} y1={323} y2={281} />
+      <VArrow x={encX} y1={239} y2={226} />
+      <VArrow x={decX} y1={239} y2={226} />
+      <VArrow x={decX} y1={184} y2={171} />
+      <VArrow x={decX} y1={129} y2={116} />
+      <VArrow x={decX} y1={74} y2={55} />
+
+      <line
+        x1={encX + boxW / 2}
+        y1={205}
+        x2={decX - boxW / 2}
+        y2={205}
+        stroke={ACCENT}
+        strokeWidth={2}
+        markerEnd="url(#tf-cross-arrow)"
+      />
+      <text x={160} y={196} textAnchor="middle" fill={TEXT_MUTED} fontSize={9} fontFamily={labelProps.fontFamily}>
+        인코더 출력
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -2379,6 +2476,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'xor-network': XorNetwork,
   'backprop-graph': BackpropGraph,
   'backprop-numeric': BackpropNumeric,
+  'transformer-architecture': TransformerArchitecture,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

@@ -28,6 +28,7 @@ export type DiagramId =
   | 'xor-network'
   | 'backprop-graph'
   | 'backprop-numeric'
+  | 'transformer-architecture'
 
 export interface Slide {
   id: string

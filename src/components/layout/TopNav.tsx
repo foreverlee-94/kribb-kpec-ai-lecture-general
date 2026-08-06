@@ -5,7 +5,7 @@ interface TopNavProps {
 }
 
 export function TopNav({
-  title = 'KRIBB AI Lecture',
+  title = 'KPEC AI Lecture',
   onMenuButtonClick,
   onCollapseButtonClick,
 }: TopNavProps) {

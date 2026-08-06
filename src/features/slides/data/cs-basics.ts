@@ -63,7 +63,8 @@ export const csBasicsSlides: Slide[] = [
   {
     id: 'cs-cpu-memory',
     title: '프로그램은 어떻게 실행되는가',
-    body: '우리가 짠 알고리즘은 결국 CPU와 메모리 사이를 오가는 매우 단순한 동작의 반복으로 실행됩니다.',
+    body: '오른쪽 도식처럼, 우리가 짠 알고리즘은 결국 CPU와 메모리 사이를 오가는 매우 단순한 동작의 반복으로 실행됩니다.',
+    diagram: 'cpu-memory-flow',
     bullets: [
       'CPU(중앙처리장치) | 명령을 하나씩 읽어 계산하고 판단하는 두뇌 역할',
       '메모리(RAM) | 지금 계산 중인 값을 임시로 저장, 전원이 꺼지면 사라짐',

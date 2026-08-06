@@ -40,4 +40,5 @@ export const diagramAspect: Record<DiagramId, number> = {
   'gpt1-clm': 320 / 220,
   'gpt-scale-compare': 320 / 300,
   'variable-function': 320 / 230,
+  'cpu-memory-flow': 320 / 220,
 }

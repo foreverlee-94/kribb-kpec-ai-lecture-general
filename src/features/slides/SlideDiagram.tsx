@@ -3001,6 +3001,79 @@ function VariableFunction() {
   )
 }
 
+function CpuMemoryFlow() {
+  const boxW = 70
+  const boxH = 50
+  const boxY = 70
+  const units = [
+    { cx: 55, label: 'CPU', desc: '두뇌 역할' },
+    { cx: 160, label: '메모리', desc: '임시 저장' },
+    { cx: 265, label: '저장장치', desc: '영구 저장' },
+  ]
+
+  return (
+    <svg viewBox="0 0 320 220" className="h-full w-full">
+      <defs>
+        <marker id="cmf-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill={LINE_DIM} />
+        </marker>
+        <marker id="cmf-arrow-rev" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M10,0 L0,5 L10,10 z" fill={LINE_DIM} />
+        </marker>
+      </defs>
+
+      {units.map((u) => (
+        <text key={`desc-${u.cx}`} x={u.cx} y={55} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+          {u.desc}
+        </text>
+      ))}
+
+      {units.map((u) => (
+        <g key={u.cx}>
+          <rect x={u.cx - boxW / 2} y={boxY} width={boxW} height={boxH} rx={6} fill="none" stroke={LINE} strokeWidth={2} />
+          <text x={u.cx} y={boxY + 29} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+            {u.label}
+          </text>
+        </g>
+      ))}
+
+      <line
+        x1={units[0].cx + boxW / 2}
+        y1={boxY + boxH / 2}
+        x2={units[1].cx - boxW / 2}
+        y2={boxY + boxH / 2}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerStart="url(#cmf-arrow-rev)"
+        markerEnd="url(#cmf-arrow)"
+      />
+      <line
+        x1={units[1].cx + boxW / 2}
+        y1={boxY + boxH / 2}
+        x2={units[2].cx - boxW / 2}
+        y2={boxY + boxH / 2}
+        stroke={LINE_DIM}
+        strokeWidth={1.5}
+        markerStart="url(#cmf-arrow-rev)"
+        markerEnd="url(#cmf-arrow)"
+      />
+      <text x={(units[0].cx + units[1].cx) / 2} y={boxY + boxH / 2 - 10} textAnchor="middle" fill={TEXT_MUTED} fontSize={8} fontFamily={labelProps.fontFamily}>
+        읽기/쓰기
+      </text>
+      <text x={(units[1].cx + units[2].cx) / 2} y={boxY + boxH / 2 - 10} textAnchor="middle" fill={TEXT_MUTED} fontSize={8} fontFamily={labelProps.fontFamily}>
+        읽기/쓰기
+      </text>
+
+      <text x={160} y={160} textAnchor="middle" fill={TEXT_MUTED} fontSize={10} fontFamily={labelProps.fontFamily}>
+        실행 흐름
+      </text>
+      <text x={160} y={190} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        입력 → 처리 → 저장 → 출력
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -3041,6 +3114,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'gpt1-clm': Gpt1Clm,
   'gpt-scale-compare': GptScaleCompare,
   'variable-function': VariableFunction,
+  'cpu-memory-flow': CpuMemoryFlow,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

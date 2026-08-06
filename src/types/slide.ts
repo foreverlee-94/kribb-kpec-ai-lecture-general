@@ -38,6 +38,7 @@ export type DiagramId =
   | 'gpt1-clm'
   | 'gpt-scale-compare'
   | 'variable-function'
+  | 'cpu-memory-flow'
 
 export interface SlideImage {
   src: string

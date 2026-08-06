@@ -1,4 +1,4 @@
-# KRIBB AI Lecture
+# KPEC AI Lecture
 
 파워포인트 대신 웹 기반으로 진행하는 인터랙티브 강의 플랫폼입니다.
 

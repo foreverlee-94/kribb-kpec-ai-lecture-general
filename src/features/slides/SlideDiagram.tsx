@@ -3074,6 +3074,87 @@ function CpuMemoryFlow() {
   )
 }
 
+function DataDimensions() {
+  const values1d = [90, 85, 77, 95, 88]
+  const cell1d = 34
+  const gap1d = 4
+  const width1d = values1d.length * cell1d + (values1d.length - 1) * gap1d
+  const startX1d = 160 - width1d / 2
+
+  function Grid2D({ x, y, cols, rows, cell, gap, stroke }: { x: number; y: number; cols: number; rows: number; cell: number; gap: number; stroke: string }) {
+    const items: React.JSX.Element[] = []
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        items.push(
+          <rect
+            key={`${r}-${c}`}
+            x={x + c * (cell + gap)}
+            y={y + r * (cell + gap)}
+            width={cell}
+            height={cell}
+            fill="none"
+            stroke={stroke}
+            strokeWidth={1.5}
+          />,
+        )
+      }
+    }
+    return <>{items}</>
+  }
+
+  return (
+    <svg viewBox="0 0 320 260" className="h-full w-full">
+      <text x={160} y={20} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        1차원 (벡터) — 값들을 한 줄로 나열
+      </text>
+      {values1d.map((v, i) => (
+        <g key={i}>
+          <rect
+            x={startX1d + i * (cell1d + gap1d)}
+            y={35}
+            width={cell1d}
+            height={32}
+            fill="none"
+            stroke={i === 0 ? ACCENT : LINE}
+            strokeWidth={i === 0 ? 2.5 : 2}
+          />
+          <text
+            x={startX1d + i * (cell1d + gap1d) + cell1d / 2}
+            y={56}
+            textAnchor="middle"
+            fill={TEXT}
+            fontSize={12}
+            fontFamily={labelProps.fontFamily}
+          >
+            {v}
+          </text>
+        </g>
+      ))}
+
+      <text x={90} y={110} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        2차원 (행렬)
+      </text>
+      <Grid2D x={52} y={125} cols={3} rows={3} cell={24} gap={2} stroke={LINE} />
+      <text x={90} y={222} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        행×열 격자
+      </text>
+
+      <text x={235} y={110} textAnchor="middle" fill={TEXT} fontSize={13} fontFamily={labelProps.fontFamily}>
+        3차원 (텐서)
+      </text>
+      <Grid2D x={234} y={157} cols={2} rows={2} cell={16} gap={2} stroke={LINE_DIM} />
+      <Grid2D x={222} y={166} cols={2} rows={2} cell={16} gap={2} stroke={LINE_DIM} />
+      <Grid2D x={210} y={175} cols={2} rows={2} cell={16} gap={2} stroke={ACCENT} />
+      <text x={235} y={222} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        격자를 여러 겹 쌓음
+      </text>
+      <text x={235} y={236} textAnchor="middle" fill={TEXT_MUTED} fontSize={11} fontFamily={labelProps.fontFamily}>
+        (예: 컬러 사진의 RGB)
+      </text>
+    </svg>
+  )
+}
+
 const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   timeline: Timeline,
   perceptron: Perceptron,
@@ -3115,6 +3196,7 @@ const diagramMap: Record<DiagramId, () => React.JSX.Element> = {
   'gpt-scale-compare': GptScaleCompare,
   'variable-function': VariableFunction,
   'cpu-memory-flow': CpuMemoryFlow,
+  'data-dimensions': DataDimensions,
 }
 
 export function SlideDiagram({ id }: { id: DiagramId }) {

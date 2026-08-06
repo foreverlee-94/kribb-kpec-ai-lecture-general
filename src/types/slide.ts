@@ -39,6 +39,7 @@ export type DiagramId =
   | 'gpt-scale-compare'
   | 'variable-function'
   | 'cpu-memory-flow'
+  | 'data-dimensions'
 
 export interface SlideImage {
   src: string
